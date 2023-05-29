@@ -25,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 
 import clases.Usuario;
 import exceptions.UsuarioNoExisteException;
+import exceptions.ConexionFallidaException;
 import exceptions.ContraseñaInvalidaException;
 
 public class PantallaLogin extends  PanelMadre {
@@ -40,36 +41,46 @@ public class PantallaLogin extends  PanelMadre {
 
 		JButton botonLogin = new JButton("Iniciar Sesión");
 		botonLogin.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String usuario = campoUsuario.getText();
-				String contraseña = new String(campoContraseña.getPassword());
-				System.out.println(usuario + " : " + contraseña);
-				try {
-					ventana.clienteLogado = new Usuario(usuario, contraseña);
-					JOptionPane.showMessageDialog(ventana, "Bienvenid@, " + ventana.clienteLogado.getNombre(),
-							"Inicio de sesión exitoso", JOptionPane.INFORMATION_MESSAGE);
-					ventana.cambiarAPantalla(PantallaListado.class);
-
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(ventana, e1.getMessage(), "Login fallido", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-				} catch (UsuarioNoExisteException e1) {
-					JOptionPane.showMessageDialog(ventana, "El cliente no existe", "Login fallido",
-							JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-				} catch (ContraseñaInvalidaException e1) {
-					JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
-							JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-				}
-			}
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        String correo = campoUsuario.getText();
+		        String contraseña = new String(campoContraseña.getPassword());
+		        System.out.println(correo + " : " + contraseña);
+		        try {
+		            Usuario usuario = new Usuario(correo, contraseña);
+		            // Comparar contraseñas sin tener en cuenta espacios en blanco y diferencias de mayúsculas y minúsculas
+		            if (usuario.getContraseña().trim().equalsIgnoreCase(contraseña.trim())) {
+		                ventana.clienteLogado = usuario;
+		                JOptionPane.showMessageDialog(ventana, "Bienvenid@, " + ventana.clienteLogado.getNombre(),
+		                        "Inicio de sesión exitoso", JOptionPane.INFORMATION_MESSAGE);
+		                ventana.cambiarAPantalla(PantallaListado.class);
+		            } else {
+		                JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
+		                        JOptionPane.ERROR_MESSAGE);
+		            }
+		        } catch (SQLException e1) {
+		            JOptionPane.showMessageDialog(ventana, e1.getMessage(), "Login fallido", JOptionPane.ERROR_MESSAGE);
+		            e1.printStackTrace();
+		        } catch (UsuarioNoExisteException e1) {
+		            JOptionPane.showMessageDialog(ventana, "El cliente no existe", "Login fallido",
+		                    JOptionPane.ERROR_MESSAGE);
+		            e1.printStackTrace();
+		        } catch (ContraseñaInvalidaException e1) {
+		            JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
+		                    JOptionPane.ERROR_MESSAGE);
+		            e1.printStackTrace();
+		        } catch (ConexionFallidaException e1) {
+		            JOptionPane.showMessageDialog(ventana, "Error al conectar a la base de datos", "Login fallido",
+		                    JOptionPane.ERROR_MESSAGE);
+		            e1.printStackTrace();
+		        }
+		    }
 		});
 		botonLogin.setToolTipText("Pínchame para iniciar sesión");
 		botonLogin.setForeground(new Color(0, 64, 0));
 		botonLogin.setFont(new Font("Arial", Font.BOLD, 18));
 		botonLogin.setBackground(new Color(70, 193, 91));
-		botonLogin.setBounds(374, 269, 192, 93);
+		botonLogin.setBounds(320, 269, 192, 93);
 		add(botonLogin);
 
 		JButton botonRegistro = new JButton("Regístrate");
@@ -83,7 +94,7 @@ public class PantallaLogin extends  PanelMadre {
 		botonRegistro.setForeground(new Color(255, 255, 255));
 		botonRegistro.setFont(new Font("Arial", Font.BOLD, 18));
 		botonRegistro.setBackground(new Color(0, 64, 128));
-		botonRegistro.setBounds(182, 269, 192, 93);
+		botonRegistro.setBounds(90, 269, 192, 93);
 		add(botonRegistro);
 
 		campoUsuario = new JTextField();
@@ -107,19 +118,5 @@ public class PantallaLogin extends  PanelMadre {
 		etiquetaContraseña.setFont(new Font("SansSerif", Font.PLAIN, 26));
 		etiquetaContraseña.setBounds(37, 140, 224, 39);
 		add(etiquetaContraseña);
-
-		JLabel labelImagen = new JLabel("");
-		try {
-
-			BufferedImage imagen = ImageIO.read(new File(".\\imagenes\\resultado.jpg"));
-			Image enIcono = imagen.getScaledInstance(200, 100, Image.SCALE_SMOOTH);
-			labelImagen.setIcon(new ImageIcon(enIcono));
-
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		labelImagen.setBounds(37, 267, 135, 95);
-		add(labelImagen);
 	}
 }

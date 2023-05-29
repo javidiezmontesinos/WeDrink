@@ -1,8 +1,8 @@
 package clases;
 
 public class SuperClaseLugar extends SuperClaseInfo {
-	protected  String localidad;
-	protected  String direccion;
+	protected static  String localidad;
+	protected static  String direccion;
 	
 	public SuperClaseLugar(String nombre, String descripcion, String localidad, String direcion) {
 		super(nombre, descripcion);

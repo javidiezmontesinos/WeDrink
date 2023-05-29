@@ -9,6 +9,7 @@ public class ClienteDiscoteca {
 		this.puntosacumulados = puntosacumulados;
 		this.discoteca = discoteca;
 	}
+	
 
 	public int getPuntosacumulados() {
 		return puntosacumulados;
@@ -29,6 +30,18 @@ public class ClienteDiscoteca {
 	@Override
 	public String toString() {
 		return "ClienteDiscoteca [puntosacumulados=" + puntosacumulados + ", discoteca=" + discoteca + "]";
+	}
+
+
+	public int getPuntos() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public void setPuntos(int puntosRestantes) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

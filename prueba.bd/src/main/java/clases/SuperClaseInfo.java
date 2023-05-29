@@ -1,7 +1,7 @@
 package clases;
 
 public class SuperClaseInfo {
-	protected  String nombre;
+	protected static  String nombre;
 	private String descripcion;
 	
 	public SuperClaseInfo(String nombre, String descripcion) {

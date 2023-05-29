@@ -17,7 +17,12 @@ public class Evento extends SuperClaseLugar {
 		this.asistentes = asistentes;
 		this.precioEvento = precioEvento;
 	}
-
+	public Evento(String nombre,String descripcion,String localidad,String fecha) {
+		super(fecha, descripcion, localidad, fecha);
+		this.nombre = nombre;
+        this.fecha = LocalDate.parse(fecha);
+    }
+	
 	public LocalDate getFecha() {
 		return fecha;
 	}

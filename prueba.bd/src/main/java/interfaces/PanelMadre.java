@@ -13,13 +13,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class PanelMadre extends  JPanel{
+	public PanelMadre() {
+	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		try {
-			BufferedImage fondo = ImageIO.read(new File("./fotoclase.jpg"));
+			BufferedImage fondo = ImageIO.read(new File(".\\logowedrink.jpg"));
 			
 			g.drawImage(fondo, 0, 0, this.getWidth(), 
 			this.getHeight(), new Color(0,0,0),null );

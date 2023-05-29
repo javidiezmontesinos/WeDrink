@@ -16,11 +16,11 @@ public class Ventana extends JFrame {
 
 	public Ventana() {
 		this.setSize(600, 500);
-		this.setTitle("Programa de prueba de clase");
+		this.setTitle("WeDrink");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(new PantallaLogin(this));
-		this.setIconImage(new ImageIcon("./fotoclase.jpg").getImage());
+		this.setIconImage(new ImageIcon(".\\logowedrink.jpg").getImage());
 		this.setVisible(true);
 	}
 

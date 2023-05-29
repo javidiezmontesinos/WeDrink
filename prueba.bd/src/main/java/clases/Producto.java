@@ -31,4 +31,7 @@ public class Producto extends SuperClaseInfo {
 		return "Producto [puntosPorCompra=" + puntosPorCompra + ", precioProducto=" + precioProducto + "]";
 	}
 
+	
+
+	
 }

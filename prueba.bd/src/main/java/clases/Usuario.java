@@ -1,167 +1,271 @@
 package clases;
 
-import java.awt.image.BufferedImage;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.List;
 
+import exceptions.ConexionFallidaException;
 import exceptions.ContraseñaInvalidaException;
 import exceptions.UsuarioNoExisteException;
 import utils.DAO;
 
 public class Usuario extends SuperClaseLugar {
-	private String nick;
-	private BufferedImage qrCode;
-	private String apellidos;
-	private String correo;
-	private HashMap<String, ClienteDiscoteca> puntosEnDiscoteca;
-	private HashMap<String, ClienteDiscoteca> puntosTotales;
+    private String nick;
+    private String qrCode;
+    private String apellidos;
+    private String correo;
+    private String contraseña;
+    private HashMap<String, ClienteDiscoteca> puntosEnDiscoteca;
+    private HashMap<String, ClienteDiscoteca> puntosTotales;
 
-	public Usuario(String nombre, String descripcion, String localidad, String direccion, String nick,
-			BufferedImage qrCode, String apellidos, String correo, HashMap<String, ClienteDiscoteca> puntosEnDiscoteca,
-			HashMap<String, ClienteDiscoteca> puntosTotales) {
-		super(nombre, descripcion, localidad, direccion);
-		this.nick = nick;
-		this.qrCode = qrCode;
-		this.apellidos = apellidos;
-		this.correo = correo;
-		this.puntosEnDiscoteca = puntosEnDiscoteca;
-		this.puntosTotales = puntosTotales;
-	}
+    public Usuario(String nombre, String descripcion, String localidad, String direccion, String nick,
+            String qrCode, String contraseña, String apellidos, String correo,
+            HashMap<String, ClienteDiscoteca> puntosEnDiscoteca, HashMap<String, ClienteDiscoteca> puntosTotales) {
+        super(nombre, descripcion, localidad, direccion);
+        this.nick = nick;
+        this.qrCode = qrCode;
+        this.contraseña = contraseña;
+        this.apellidos = apellidos;
+        this.correo = correo;
+        this.puntosEnDiscoteca = puntosEnDiscoteca;
+        this.puntosTotales = puntosTotales;
+    }
 
-	public Usuario(String correo, String contraseña)
-			throws SQLException, UsuarioNoExisteException, ContraseñaInvalidaException {
-		super(nombre, descripcion, localidad, direccion);
-		HashMap<String, Object> restricciones = new HashMap<String, Object>();
-		restricciones.put("correo", correo);
-		LinkedHashSet<String> columnasSelect = new LinkedHashSet<String>();
-		columnasSelect.add("nick");
-		columnasSelect.add("nombre");
-		columnasSelect.add("correo");
-		columnasSelect.add("contraseña");
-		columnasSelect.add("localidad");
-		columnasSelect.add("direccion");
-		columnasSelect.add("qrUsuario");
-		columnasSelect.add("apellidos");
-		ArrayList<Object> ret = new ArrayList<Object>();
-		ret = DAO.consultar("cliente", restricciones, columnasSelect);
-		if (ret.isEmpty()) {
-			throw new UsuarioNoExisteException("SIN DATOS");
-		} else {
-			String contraseñaAlmacenada = (String) ret.get(3);
-			if (contraseñaAlmacenada.equals(contraseña)) {
-				this.nick = (String) (ret.get(0));
-				this.nombre = (String) (ret.get(1));
-				this.correo = (String) (ret.get(2));
-				contraseña = (String) (ret.get(3));
-				this.localidad = (String) (ret.get(4));
-				this.direccion = (String) (ret.get(5));
-				this.qrCode = (BufferedImage) (ret.get(6));
-				this.apellidos = (String) (ret.get(7));
-			} else {
-				throw new ContraseñaInvalidaException("CONTRASEÑA INVALIDA");
-			}
-		}
+    public Usuario(String correo, String contraseña)
+            throws SQLException, UsuarioNoExisteException, ContraseñaInvalidaException, ConexionFallidaException {
+        super(null, null, null, null);
+        Connection connection = null;
+        try {
+            connection = DAO.connect();
+        } catch (ConexionFallidaException e1) {
+            e1.printStackTrace();
+        }
 
-	}
-	
+        String query = "SELECT nick, nombre, contraseña, localidad, direccion, qrUsuario, apellidos FROM usuario WHERE correo = ?";
 
-	public String getNick() {
-		return nick;
-	}
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, correo);
+            ResultSet resultSet = statement.executeQuery();
 
-	public void setNick(String nick) throws SQLException {
-		HashMap<String, Object> datosMod = new HashMap<String, Object>();
-		datosMod.put("nick", nick);
-		HashMap<String, Object> restriccion = new HashMap<String, Object>();
-		restriccion.put("correo", this.correo);
-		DAO.update("usuario", datosMod, restriccion);
-		this.nick = nick;
-	
-	}
+            if (resultSet.next()) {
+                String contraseñaAlmacenada = resultSet.getString("contraseña");
+                if (contraseñaAlmacenada.equals(contraseña)) {
+                    this.nick = resultSet.getString("nick");
+                    this.nombre = resultSet.getString("nombre");
+                    this.correo = correo;
+                    this.contraseña = contraseña;
+                    this.localidad = resultSet.getString("localidad");
+                    this.direccion = resultSet.getString("direccion");
+                    this.qrCode = resultSet.getString("qrUsuario");
+                    this.apellidos = resultSet.getString("apellidos");
+                } else {
+                    throw new ContraseñaInvalidaException("CONTRASEÑA INVALIDA");
+                }
+            } else {
+                throw new UsuarioNoExisteException("SIN DATOS");
+            }
 
-	public BufferedImage getQrCode() {
-		return qrCode;
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 
-	public void setQrCode(BufferedImage qrCode) throws SQLException {
-		HashMap<String, Object> datosMod = new HashMap<String, Object>();
-		datosMod.put("qrUsuario", qrCode);
-		HashMap<String, Object> restriccion = new HashMap<String, Object>();
-		restriccion.put("correo", this.correo);
-		DAO.update("usuario", datosMod, restriccion);
-		this.qrCode = qrCode;
-	}
+    public void verEventosCercanos() throws ConexionFallidaException {
+        List<Evento> eventosCercanos = obtenerEventosCercanos();
 
-	public String getApellidos() {
-		return apellidos;
-	}
+        if (eventosCercanos.isEmpty()) {
+            System.out.println("No hay eventos cercanos en tu localidad.");
+        } else {
+            System.out.println("Eventos cercanos en " + localidad + ":");
+            for (Evento evento : eventosCercanos) {
+                System.out.println(evento.getNombre() + " - " + evento.getFecha());
+            }
+        }
+    }
 
-	public void setApellidos(String apellidos) throws SQLException {
-		HashMap<String, Object> datosMod = new HashMap<String, Object>();
-		datosMod.put("apellidos", apellidos);
-		HashMap<String, Object> restriccion = new HashMap<String, Object>();
-		restriccion.put("correo", this.correo);
-		DAO.update("usuario", datosMod, restriccion);
-		this.apellidos = apellidos;
-	}
+    private List<Evento> obtenerEventosCercanos() throws ConexionFallidaException {
+        List<Evento> eventosCercanos = new ArrayList<>();
 
-	public String getCorreo() {
-		return correo;
-	}
+        try (Connection connection = DAO.connect()) {
+            String sql = "SELECT nombre, fecha FROM eventos WHERE localidad = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, localidad);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        String nombre = rs.getString("nombre");
+                        String fecha = rs.getString("fecha");
+                        String descripcion = rs.getString("descripcion");
+                        String localidad = rs.getString("localidad");
+                        eventosCercanos.add(new Evento(nombre, descripcion, localidad, fecha));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	public void setCorreo(String correo) throws SQLException {
-		HashMap<String, Object> datosMod = new HashMap<String, Object>();
-		datosMod.put("correo", correo);
-		HashMap<String, Object> restriccion = new HashMap<String, Object>();
-		restriccion.put("correo", this.correo);
-		DAO.update("usuario", datosMod, restriccion);
-		this.correo = correo;
-	}
+        return eventosCercanos;
+    }
 
-	public HashMap<String, ClienteDiscoteca> getPuntosEnDiscoteca() {
-		return puntosEnDiscoteca;
-	}
+    public String getContraseña() {
+        return contraseña;
+    }
 
-	public void setPuntosEnDiscoteca(HashMap<String, ClienteDiscoteca> puntosEnDiscoteca) {
-		
-		this.puntosEnDiscoteca = puntosEnDiscoteca;
-	}
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
 
-	public HashMap<String, ClienteDiscoteca> getPuntosTotales() {
-		return puntosTotales;
-	}
+    public static void registrar_usuario(String nick, String contraseña, String nombre, String correo, String localidad, String direccion, String qrCode, String apellidos)
+            throws SQLException, UsuarioNoExisteException, ConexionFallidaException {
+        try (Connection connection = DAO.connect()) {
+            // Verifica si el nombre de usuario ya existe
+            String checkQuery = "SELECT * FROM Usuario WHERE nick = ?";
+            PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
+            checkStatement.setString(1, nick);
+            ResultSet resultSet = checkStatement.executeQuery();
+            if (resultSet.next()) {
+                throw new SQLException("El nombre de usuario ya existe");
+            }
 
-	public void setPuntosTotales(HashMap<String, ClienteDiscoteca> puntosTotales) {
-		this.puntosTotales = puntosTotales;
-	}
-	public static ArrayList<Usuario> getTodos() throws SQLException, UsuarioNoExisteException, ContraseñaInvalidaException {
-	    LinkedHashSet<String> columnasSacar = new LinkedHashSet<>();
-	    columnasSacar.add("email");
-	    columnasSacar.add("nick");
+            String query = "INSERT INTO Usuario (nick, nombre, correo, contraseña, localidad, direccion, qrUsuario, apellidos) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, nick);
+            statement.setString(2, nombre);
+            statement.setString(3, correo);
+            statement.setString(4, contraseña);
+            statement.setString(5, localidad);
+            statement.setString(6, direccion);
+            statement.setString(7, qrCode);
+            statement.setString(8, apellidos);
 
-	    HashMap<String, Object> restricciones = new HashMap<>();
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Usuario registrado exitosamente!");
+            }
+        }
+    }
 
-	    ArrayList<Usuario> clientes = new ArrayList<>();
-	    ArrayList<Object> listaClientes = new ArrayList<>();
-	    listaClientes = DAO.consultar("usuario", restricciones, columnasSacar);
 
-	    for (int i = 0; i < listaClientes.size(); i += 2) {
-	        Usuario cliente = new Usuario(
-	            (String) listaClientes.get(i),
-	            (String) listaClientes.get(i + 1)
-	            
-	        );
-	        clientes.add(cliente);
-	    }
+    public String getNick() {
+        return nick;
+    }
 
-	    return clientes;
-	}
-	@Override
-	public String toString() {
-		return "Usuario [nick=" + nick + ", qrCode=" + qrCode + ", apellidos=" + apellidos + ", correo=" + correo
-				+ ", puntosEnDiscoteca=" + puntosEnDiscoteca + ", puntosTotales=" + puntosTotales + "]";
-	}
+    public void iniciar_sesion(String correo, String contraseña) {
+        Connection connection = null;
+        try {
+            connection = DAO.connect();
+        } catch (ConexionFallidaException e1) {
+            e1.printStackTrace();
+        }
 
+        String query = "SELECT * FROM Usuario WHERE correo = ? AND contraseña = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, correo);
+            statement.setString(2, contraseña);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                System.out.println("¡Inicio de sesión exitoso!");
+                this.nick = resultSet.getString("nick");
+                this.nombre = resultSet.getString("nombre");
+                this.correo = resultSet.getString("correo");
+                this.contraseña = resultSet.getString("contraseña");
+                this.localidad = resultSet.getString("localidad");
+                this.direccion = resultSet.getString("direccion");
+                this.qrCode = resultSet.getString("qrUsuario");
+                this.apellidos = resultSet.getString("apellidos");
+            } else {
+                System.out.println("¡Correo o contraseña incorrectos!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void comprarProducto(Producto productoComprado) {
+        if (puntosEnDiscoteca.containsKey(productoComprado.getNombre()) && puntosEnDiscoteca
+                .get(productoComprado.getNombre()).getPuntos() >= productoComprado.getPuntosPorCompra()) {
+
+            int puntosActuales = puntosEnDiscoteca.get(productoComprado.getNombre()).getPuntos();
+            int puntosRestantes = puntosActuales - productoComprado.getPuntosPorCompra();
+            puntosEnDiscoteca.get(productoComprado.getNombre()).setPuntos(puntosRestantes);
+
+            String consulta = "INSERT INTO compras (usuario_nick, producto_nombre, fecha) VALUES (?, ?, ?)";
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wedrink", "root",
+                    "basket10"); PreparedStatement statement = connection.prepareStatement(consulta)) {
+                statement.setString(1, this.nick);
+                statement.setString(2, productoComprado.getNombre());
+                statement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+                statement.executeUpdate();
+
+                System.out.println("Producto comprado: " + productoComprado.getNombre());
+                System.out.println("Puntos restantes: " + puntosRestantes);
+            } catch (SQLException e) {
+                System.out.println("Error al registrar la compra del producto: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No tienes suficientes puntos para comprar este producto.");
+        }
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public HashMap<String, ClienteDiscoteca> getPuntosEnDiscoteca() {
+        return puntosEnDiscoteca;
+    }
+
+    public void setPuntosEnDiscoteca(HashMap<String, ClienteDiscoteca> puntosEnDiscoteca) {
+        this.puntosEnDiscoteca = puntosEnDiscoteca;
+    }
+
+    public HashMap<String, ClienteDiscoteca> getPuntosTotales() {
+        return puntosTotales;
+    }
+
+    public void setPuntosTotales(HashMap<String, ClienteDiscoteca> puntosTotales) {
+        this.puntosTotales = puntosTotales;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario [nick=" + nick + ", qrCode=" + qrCode + ", apellidos=" + apellidos + ", correo=" + correo
+                + ", puntosEnDiscoteca=" + puntosEnDiscoteca + ", puntosTotales=" + puntosTotales + "]";
+    }
 }
