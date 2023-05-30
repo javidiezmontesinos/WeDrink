@@ -51,9 +51,9 @@ public class PantallaLogin extends  PanelMadre {
 		            // Comparar contraseñas sin tener en cuenta espacios en blanco y diferencias de mayúsculas y minúsculas
 		            if (usuario.getContraseña().trim().equalsIgnoreCase(contraseña.trim())) {
 		                ventana.clienteLogado = usuario;
-		                JOptionPane.showMessageDialog(ventana, "Bienvenid@, " + ventana.clienteLogado.getNombre(),
+		                JOptionPane.showMessageDialog(ventana, "Bienvenid@, " + ventana.clienteLogado.getNick(),
 		                        "Inicio de sesión exitoso", JOptionPane.INFORMATION_MESSAGE);
-		                ventana.cambiarAPantalla(PantallaListado.class);
+		                ventana.cambiarAPantalla(VentanaUsuario.class);
 		            } else {
 		                JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
 		                        JOptionPane.ERROR_MESSAGE);

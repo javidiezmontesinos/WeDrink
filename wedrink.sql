@@ -16,8 +16,10 @@ CREATE TABLE ClienteDiscoteca (
   puntosAcumulados INT,
   discoteca_id INT,
   FOREIGN KEY (discoteca_id) REFERENCES Discoteca(id)
+  
 );
-
+ALTER TABLE ClienteDiscoteca
+ADD FOREIGN KEY (id) REFERENCES Usuario(id);
 -- Crear la tabla Premio
 CREATE TABLE Premio (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -43,7 +45,8 @@ CREATE TABLE Producto (
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Beefeeter","Alcohol ginebra","20","10");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Brugal","Alcohol ron","20","10");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Red Label","Alcohol wishky","25","15");
-
+ALTER TABLE producto ADD imagenUrl VARCHAR(255);
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Brugal","ron barato resacosos","20","10","https://www.divinodrinks.com/834-large_default/ron-brugal-anejo.jpg");
 -- Crear la tabla Evento
 CREATE TABLE Evento (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -84,11 +87,10 @@ CREATE TABLE Usuario (
   direccion VARCHAR(200),
   qrUsuario VARCHAR(100),
   apellidos VARCHAR(100)
-);usuariousuario
+);
 insert into user values("prueba@prueba.es","123123","Prueba");
 insert into usuario (nick,nombre,correo,contraseña,localidad,direccion,qrUsuario,apellidos) values ("Miguel_Granada","Miguel","miguelcenec@gmail.com","1234","Malaga","granada 1","qr-2","Paramos");
 SELECT * FROM usuario;
-clientediscotecaDELETE FROM Usuario WHERE id = 4;
 
 CREATE TABLE wedrink.compras (
   id INT AUTO_INCREMENT PRIMARY KEY,

@@ -153,7 +153,8 @@ public class Usuario extends SuperClaseLugar {
             }
         }
     }
-
+    
+    
 
     public String getNick() {
         return nick;
@@ -193,30 +194,9 @@ public class Usuario extends SuperClaseLugar {
         }
     }
 
+
     public void comprarProducto(Producto productoComprado) {
-        if (puntosEnDiscoteca.containsKey(productoComprado.getNombre()) && puntosEnDiscoteca
-                .get(productoComprado.getNombre()).getPuntos() >= productoComprado.getPuntosPorCompra()) {
-
-            int puntosActuales = puntosEnDiscoteca.get(productoComprado.getNombre()).getPuntos();
-            int puntosRestantes = puntosActuales - productoComprado.getPuntosPorCompra();
-            puntosEnDiscoteca.get(productoComprado.getNombre()).setPuntos(puntosRestantes);
-
-            String consulta = "INSERT INTO compras (usuario_nick, producto_nombre, fecha) VALUES (?, ?, ?)";
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wedrink", "root",
-                    "basket10"); PreparedStatement statement = connection.prepareStatement(consulta)) {
-                statement.setString(1, this.nick);
-                statement.setString(2, productoComprado.getNombre());
-                statement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
-                statement.executeUpdate();
-
-                System.out.println("Producto comprado: " + productoComprado.getNombre());
-                System.out.println("Puntos restantes: " + puntosRestantes);
-            } catch (SQLException e) {
-                System.out.println("Error al registrar la compra del producto: " + e.getMessage());
-            }
-        } else {
-            System.out.println("No tienes suficientes puntos para comprar este producto.");
-        }
+        
     }
 
     public String getQrCode() {
@@ -268,4 +248,9 @@ public class Usuario extends SuperClaseLugar {
         return "Usuario [nick=" + nick + ", qrCode=" + qrCode + ", apellidos=" + apellidos + ", correo=" + correo
                 + ", puntosEnDiscoteca=" + puntosEnDiscoteca + ", puntosTotales=" + puntosTotales + "]";
     }
+
+	public static Usuario getNick(String nick2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,22 +1,23 @@
 package clases;
 
 public class ClienteDiscoteca {
-	private int puntosacumulados;
+	private int puntosAcumuladosDiscoteca;
 	private Discoteca discoteca;
+	private Usuario usuarioCliente;
 
-	public ClienteDiscoteca(int puntosacumulados, Discoteca discoteca) {
+	public ClienteDiscoteca(int puntosAcumuladosDiscoteca, Discoteca discoteca, Usuario usuarioCliente) {
 		super();
-		this.puntosacumulados = puntosacumulados;
+		this.puntosAcumuladosDiscoteca = puntosAcumuladosDiscoteca;
 		this.discoteca = discoteca;
-	}
-	
-
-	public int getPuntosacumulados() {
-		return puntosacumulados;
+		this.usuarioCliente = usuarioCliente;
 	}
 
-	public void setPuntosacumulados(int puntosacumulados) {
-		this.puntosacumulados = puntosacumulados;
+	public int getPuntosAcumuladosDiscoteca() {
+		return puntosAcumuladosDiscoteca;
+	}
+
+	public void setPuntosAcumuladosDiscoteca(int puntosAcumuladosDiscoteca) {
+		this.puntosAcumuladosDiscoteca = puntosAcumuladosDiscoteca;
 	}
 
 	public Discoteca getDiscoteca() {
@@ -27,21 +28,18 @@ public class ClienteDiscoteca {
 		this.discoteca = discoteca;
 	}
 
+	public Usuario getUsuarioCliente() {
+		return usuarioCliente;
+	}
+
+	public void setUsuarioCliente(Usuario usuarioCliente) {
+		this.usuarioCliente = usuarioCliente;
+	}
+
 	@Override
 	public String toString() {
-		return "ClienteDiscoteca [puntosacumulados=" + puntosacumulados + ", discoteca=" + discoteca + "]";
-	}
-
-
-	public int getPuntos() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	public void setPuntos(int puntosRestantes) {
-		// TODO Auto-generated method stub
-		
+		return "ClienteDiscoteca [puntosAcumuladosDiscoteca=" + puntosAcumuladosDiscoteca + ", discoteca=" + discoteca
+				+ ", usuarioCliente=" + usuarioCliente + "]";
 	}
 
 }
