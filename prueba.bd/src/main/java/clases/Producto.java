@@ -14,7 +14,7 @@ import utils.DAO;
 public class Producto extends SuperClaseInfo {
 	private int puntosPorCompra;
 	private double precioProducto;
-	private String imagenUrl; // Nuevo atributo
+	private String imagenUrl;
 
 	public Producto(String nombre, String descripcion, int puntosPorCompra, double precioProducto, String imagenUrl) { // Nuevo argumento en el constructor
 		super(nombre, descripcion);

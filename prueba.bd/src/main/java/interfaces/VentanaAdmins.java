@@ -32,7 +32,7 @@ public class VentanaAdmins extends JFrame {
 	        // Label superior izquierdo
 	        JPanel panelSuperiorIzquierdo = new JPanel();
 	        panelSuperiorIzquierdo.setLayout(new BorderLayout());
-	        JLabel labelSuperiorIzquierdo = new JLabel("Texto superior izquierdo");
+	        JLabel labelSuperiorIzquierdo = new JLabel("PROMOCIONES");
 	        panelSuperiorIzquierdo.add(labelSuperiorIzquierdo, BorderLayout.NORTH);
 	        panelIzquierdo.add(panelSuperiorIzquierdo, BorderLayout.NORTH);
 
@@ -40,13 +40,13 @@ public class VentanaAdmins extends JFrame {
 	        JPanel panelBotonesSuperioresIzquierdos = new JPanel();
 	        panelBotonesSuperioresIzquierdos.setLayout(new GridLayout(3, 1, 0, 10));
 
-	        JButton boton1 = new JButton("Botón 1");
+	        JButton boton1 = new JButton("AÑADIR PROMOCIONES");
 	        panelBotonesSuperioresIzquierdos.add(boton1);
 
-	        JButton boton2 = new JButton("Botón 2");
+	        JButton boton2 = new JButton("EDITAR PROMOCIONES");
 	        panelBotonesSuperioresIzquierdos.add(boton2);
 
-	        JButton boton3 = new JButton("Botón 3");
+	        JButton boton3 = new JButton("BORRAR PROMOCION");
 	        panelBotonesSuperioresIzquierdos.add(boton3);
 
 	        panelIzquierdo.add(panelBotonesSuperioresIzquierdos, BorderLayout.CENTER);
@@ -54,20 +54,20 @@ public class VentanaAdmins extends JFrame {
 	        // Label inferior izquierdo
 	        JPanel panelInferiorIzquierdo = new JPanel();
 	        panelInferiorIzquierdo.setLayout(new BorderLayout());
-	        JLabel labelInferiorIzquierdo = new JLabel("Texto inferior izquierdo");
+	        JLabel labelInferiorIzquierdo = new JLabel("PREMIOS");
 	        panelInferiorIzquierdo.add(labelInferiorIzquierdo, BorderLayout.NORTH);
 
 	        // Botones inferiores izquierdos
 	        JPanel panelBotonesInferioresIzquierdos = new JPanel();
 	        panelBotonesInferioresIzquierdos.setLayout(new GridLayout(3, 1, 0, 10));
 
-	        JButton boton4 = new JButton("Botón 4");
+	        JButton boton4 = new JButton("AÑADIR PREMIOS");
 	        panelBotonesInferioresIzquierdos.add(boton4);
 
-	        JButton boton5 = new JButton("Botón 5");
+	        JButton boton5 = new JButton("EDITAR PREMIOS");
 	        panelBotonesInferioresIzquierdos.add(boton5);
 
-	        JButton boton6 = new JButton("Botón 6");
+	        JButton boton6 = new JButton("BORRAR PREMIOS");
 	        panelBotonesInferioresIzquierdos.add(boton6);
 
 	        panelInferiorIzquierdo.add(panelBotonesInferioresIzquierdos, BorderLayout.CENTER);
@@ -78,9 +78,7 @@ public class VentanaAdmins extends JFrame {
 	        // Panel central con scroll
 	        JPanel panelCentral = new JPanel();
 	        panelCentral.setLayout(new BorderLayout());
-
-	        JLabel labelCentral = new JLabel("Label con scroll");
-	        JScrollPane scrollPane = new JScrollPane(labelCentral);
+	        JScrollPane scrollPane = new JScrollPane();
 	        panelCentral.add(scrollPane, BorderLayout.CENTER);
 
 	        panelPrincipal.add(panelCentral, BorderLayout.CENTER);
@@ -92,7 +90,7 @@ public class VentanaAdmins extends JFrame {
 	        // Label superior derecho
 	        JPanel panelSuperiorDerecho = new JPanel();
 	        panelSuperiorDerecho.setLayout(new BorderLayout());
-	        JLabel labelSuperiorDerecho = new JLabel("Texto superior derecho");
+	        JLabel labelSuperiorDerecho = new JLabel("EVENTOS");
 	        panelSuperiorDerecho.add(labelSuperiorDerecho, BorderLayout.NORTH);
 	        panelDerecho.add(panelSuperiorDerecho, BorderLayout.NORTH);
 
@@ -100,13 +98,13 @@ public class VentanaAdmins extends JFrame {
 	        JPanel panelBotonesSuperioresDerechos = new JPanel();
 	        panelBotonesSuperioresDerechos.setLayout(new GridLayout(3, 1, 0, 10));
 
-	        JButton boton7 = new JButton("Botón 7");
+	        JButton boton7 = new JButton("AÑADIR EVENTOS");
 	        panelBotonesSuperioresDerechos.add(boton7);
 
-	        JButton boton8 = new JButton("Botón 8");
+	        JButton boton8 = new JButton("EDITAR EVENTOS");
 	        panelBotonesSuperioresDerechos.add(boton8);
 
-	        JButton boton9 = new JButton("Botón 9");
+	        JButton boton9 = new JButton("BORRAR EVENTOS");
 	        panelBotonesSuperioresDerechos.add(boton9);
 
 	        panelDerecho.add(panelBotonesSuperioresDerechos, BorderLayout.CENTER);
@@ -114,20 +112,20 @@ public class VentanaAdmins extends JFrame {
 	        // Label inferior derecho
 	        JPanel panelInferiorDerecho = new JPanel();
 	        panelInferiorDerecho.setLayout(new BorderLayout());
-	        JLabel labelInferiorDerecho = new JLabel("Texto inferior derecho");
+	        JLabel labelInferiorDerecho = new JLabel("LOGROS");
 	        panelInferiorDerecho.add(labelInferiorDerecho, BorderLayout.NORTH);
 
 	        // Botones inferiores derechos
 	        JPanel panelBotonesInferioresDerechos = new JPanel();
 	        panelBotonesInferioresDerechos.setLayout(new GridLayout(3, 1, 0, 10));
 
-	        JButton boton10 = new JButton("Botón 10");
+	        JButton boton10 = new JButton("AÑADIR LOGROS");
 	        panelBotonesInferioresDerechos.add(boton10);
 
-	        JButton boton11 = new JButton("Botón 11");
+	        JButton boton11 = new JButton("EDITAR LOGROS");
 	        panelBotonesInferioresDerechos.add(boton11);
 
-	        JButton boton12 = new JButton("Botón 12");
+	        JButton boton12 = new JButton("BORRAR LOGROS");
 	        panelBotonesInferioresDerechos.add(boton12);
 
 	        panelInferiorDerecho.add(panelBotonesInferioresDerechos, BorderLayout.CENTER);

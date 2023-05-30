@@ -8,15 +8,19 @@ public class Evento extends SuperClaseLugar {
 	private int puntosPorAsistir;
 	private HashSet<Usuario> asistentes;
 	private double precioEvento;
+	private String imagenUrl;
 
-	public Evento(String nombre, String descripcion, String localidad, String direccion, LocalDate fecha,
-			int puntosPorAsistir, HashSet<Usuario> asistentes, double precioEvento) {
-		super(nombre, descripcion, localidad, direccion);
+	
+	public Evento(String nombre, String descripcion, String localidad, String direcion, LocalDate fecha,
+			int puntosPorAsistir, HashSet<Usuario> asistentes, double precioEvento, String imagenUrl) {
+		super(nombre, descripcion, localidad, direcion);
 		this.fecha = fecha;
 		this.puntosPorAsistir = puntosPorAsistir;
 		this.asistentes = asistentes;
 		this.precioEvento = precioEvento;
+		this.imagenUrl = imagenUrl;
 	}
+
 	public Evento(String nombre,String descripcion,String localidad,String fecha) {
 		super(fecha, descripcion, localidad, fecha);
 		this.nombre = nombre;
@@ -54,11 +58,22 @@ public class Evento extends SuperClaseLugar {
 	public void setPrecioEvento(double precioEvento) {
 		this.precioEvento = precioEvento;
 	}
+	
+
+	public String getImagenUrl() {
+		return imagenUrl;
+	}
+
+	public void setImagenUrl(String imagenUrl) {
+		this.imagenUrl = imagenUrl;
+	}
 
 	@Override
 	public String toString() {
 		return "Evento [fecha=" + fecha + ", puntosPorAsistir=" + puntosPorAsistir + ", asistentes=" + asistentes
-				+ ", precioEvento=" + precioEvento + "]";
+				+ ", precioEvento=" + precioEvento + ", imagenUrl=" + imagenUrl + "]";
 	}
+
+	
 
 }

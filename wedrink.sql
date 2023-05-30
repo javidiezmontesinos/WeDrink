@@ -1,26 +1,45 @@
 SET GLOBAL time_zone = '-3:00';
 drop database if exists wedrink;
 create database wedrink;
+DROP TABLE clientediscotecaconpuntos;
+DROP TABLE ClienteDiscoteca;
 
-use wedrink;
--- Crear la tabla ClienteDiscotecaConPuntos
-CREATE TABLE ClienteDiscotecaConPuntos (
-  cliente_id INT,
-  puntos INT,
-  FOREIGN KEY (cliente_id) REFERENCES ClienteDiscoteca(id)
-);
-
--- Crear la tabla ClienteDiscoteca
 CREATE TABLE ClienteDiscoteca (
-  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_cliente INT,
   puntosAcumulados INT,
   discoteca_id INT,
-  FOREIGN KEY (discoteca_id) REFERENCES Discoteca(id)
-  
+  FOREIGN KEY (discoteca_id) REFERENCES Discoteca(id),
+  FOREIGN KEY (id_cliente) REFERENCES Usuario(id)
 );
-ALTER TABLE ClienteDiscoteca
-ADD FOREIGN KEY (id) REFERENCES Usuario(id);
--- Crear la tabla Premio
+CREATE TABLE LOGROS (
+id INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(200),
+imagenlogro VARCHAR(255),
+descripcion VARCHAR(200),
+puntos INT,
+id_producto INT,
+id_cliente INT,
+FOREIGN KEY (id_producto) REFERENCES producto(id),
+FOREIGN KEY (id_cliente) REFERENCES usuariopuntos(usuario_id)
+);
+SELECT * FROM EVENTO;
+
+insert into clientediscoteca values ("1","80","1");
+insert into clientediscoteca values ("1","20","2");
+insert into clientediscoteca values ("2","50","1");
+insert into clientediscoteca values ("3","200","3");
+
+CREATE TABLE UsuarioPuntos (
+  usuario_id INT,
+  puntos INT,
+  FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+);
+
+
+
+
+
+
 CREATE TABLE Premio (
   id INT PRIMARY KEY AUTO_INCREMENT,
   marca VARCHAR(100),
@@ -58,11 +77,26 @@ CREATE TABLE Evento (
   puntosPorAsistir INT,
   precioEvento DECIMAL(10, 2)
 );
+ALTER TABLE Evento
+ADD imagen VARCHAR(255);
 
 insert into evento (nombre,localidad,descripcion,direccion,fecha,puntosPorAsistir,precioEvento) values("San Juan festival","Malaga","Festival de musica urbana para la celebracion de San Juan","los santos 13","24-06-23","100","20");
 insert into evento (nombre,localidad,descripcion,direccion,fecha,puntosPorAsistir,precioEvento) values("El Row","Malaga","Festival de musica tecno","acacias 3","5-06-23","200","40");
 insert into evento (nombre,localidad,descripcion,direccion,fecha,puntosPorAsistir,precioEvento) values("Los Alamos beach festival","Malaga","festival musica en la playa de los alamos en malaga
 ","los alamos 32","06-07-23","100","20");
+
+UPDATE Evento
+SET imagen = "https://visitestepona.eu/wp-content/uploads/2019/12/CARTEL-FINAL-LOS-ALAMOS-2019_V04.png"
+WHERE nombre = "Los Alamos beach festival";
+
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE Evento
+SET imagen = 'ruta_de_la_imagen'
+WHERE nombre = 'El Row';
+
+SET SQL_SAFE_UPDATES = 1;
 
 -- Crear la tabla Discoteca
 CREATE TABLE Discoteca (
@@ -75,7 +109,8 @@ CREATE TABLE Discoteca (
   pais VARCHAR(100),
   telefono VARCHAR(20)
 );
-
+SELECT * FROM DISCOTECA
+insert into
 -- Crear la tabla Usuario
 CREATE TABLE Usuario (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -90,7 +125,7 @@ CREATE TABLE Usuario (
 );
 insert into user values("prueba@prueba.es","123123","Prueba");
 insert into usuario (nick,nombre,correo,contraseña,localidad,direccion,qrUsuario,apellidos) values ("Miguel_Granada","Miguel","miguelcenec@gmail.com","1234","Malaga","granada 1","qr-2","Paramos");
-SELECT * FROM usuario;
+SELECT * FROM discoteca;
 
 CREATE TABLE wedrink.compras (
   id INT AUTO_INCREMENT PRIMARY KEY,
