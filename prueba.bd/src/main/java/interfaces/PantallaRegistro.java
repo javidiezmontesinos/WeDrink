@@ -211,7 +211,6 @@ public class PantallaRegistro extends PanelMadre {
 		
 		JButton botonRegistrar = new JButton("Regístrate");
 		botonRegistrar.addMouseListener(new MouseAdapter() {
-		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		        try {
 		            String nombre = campoNombre.getText();
@@ -240,6 +239,7 @@ public class PantallaRegistro extends PanelMadre {
 		        }
 		    }
 		});
+		
 
 		botonRegistrar.setBackground(new Color(0, 0, 120));
 		botonRegistrar.setFont(new Font("Arial", Font.ITALIC, 15));

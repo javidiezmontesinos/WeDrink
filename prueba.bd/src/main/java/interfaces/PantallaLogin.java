@@ -47,6 +47,13 @@ public class PantallaLogin extends  PanelMadre {
 		        String contraseña = new String(campoContraseña.getPassword());
 		        System.out.println(correo + " : " + contraseña);
 		        try {
+		        	String email = campoUsuario.getText();
+		              String password = new String(campoContraseña.getPassword());
+		              // Verificar que los campos no estén vacíos
+		              if (email.isEmpty() || password.isEmpty()) {
+		                  JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos obligatorios");
+		                  return;
+		              }	
 		            Usuario usuario = new Usuario(correo, contraseña);
 		            // Comparar contraseñas sin tener en cuenta espacios en blanco y diferencias de mayúsculas y minúsculas
 		            if (usuario.getContraseña().trim().equalsIgnoreCase(contraseña.trim())) {

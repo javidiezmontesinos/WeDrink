@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,10 +103,10 @@ public class Usuario extends SuperClaseLugar {
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         String nombre = rs.getString("nombre");
-                        String fecha = rs.getString("fecha");
+                        Date fecha = rs.getDate("fecha");
                         String descripcion = rs.getString("descripcion");
                         String localidad = rs.getString("localidad");
-                        eventosCercanos.add(new Evento(nombre, descripcion, localidad, fecha));
+                        //eventosCercanos.add(new Evento(nombre, descripcion, localidad, fecha));
                     }
                 }
             }

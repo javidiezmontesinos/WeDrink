@@ -6,6 +6,8 @@ import javax.swing.border.EmptyBorder;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+
+import clases.Evento;
 import clases.Producto;
 import clases.Usuario;
 import clases.Producto;
@@ -136,6 +138,43 @@ public class VentanaUsuario extends JPanel {
         
         JButton boton2 = new JButton(resizedIcon2);
         panelBotonesSuperior.add(boton2);
+        boton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener eventos
+                List<Evento> eventos = Evento.obtenerEventos();
+                JTextField nombreCategoria= new JTextField("Eventos");
+                panelProductos.add(nombreCategoria);
+                // Mostrar productos
+                for (Evento evento : eventos) {
+                    String imageUrl = evento.getImagenUrl();
+                    if (imageUrl != null && !imageUrl.isEmpty()) { // Verificar que la URL no sea nula o vacía
+                        try {
+                            // Cargar la imagen del producto desde la URL
+                            URL url = new URL(imageUrl);
+                            Image productoEvento = ImageIO.read(url);
+                            Image resizedEventoImage = productoEvento.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
+                            ImageIcon resizedEventoIcon = new ImageIcon(resizedEventoImage);
+                            
+                            // Crear un JCheckBox con la imagen y el nombre y descripción del producto
+                            
+							JCheckBox eventoCheckBox = new JCheckBox(evento.getNombre() + " - " + evento.getLocalidad() + " - " + evento.getFecha(), resizedEventoIcon);
+
+
+                            panelProductos.add(eventoCheckBox);
+                            
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+
+                panelProductos.revalidate();
+                panelProductos.repaint();
+            }
+        });
+        
+        
         
         ImageIcon originalIcon3 = new ImageIcon("premioslogo.png");
         Image originalImage3 = originalIcon3.getImage();
