@@ -22,12 +22,23 @@ id_cliente INT,
 FOREIGN KEY (id_producto) REFERENCES producto(id),
 FOREIGN KEY (id_cliente) REFERENCES usuariopuntos(usuario_id)
 );
-SELECT * FROM EVENTO;
+ALTER TABLE logros ADD logrocompletado VARCHAR(5);
+insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente) values ("BICHUPITO","https://www.elotrolado.net/w/images/4/41/Call_of_Duty_Black_Ops_II_-_prestigio1.png","dos chupitos en la misma noche","10","9","2");
+
+insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente) values ("HACTRICK GINEBRINOS","https://media-cdn.tripadvisor.com/media/photo-s/06/d6/84/e8/vinos-de-bellota.jpg","3 copas","30","8","2");
+insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente) values ("BIG CUBATA","https://cadena100-cdnmed.agilecontent.com/resources/jpg/9/9/1623830522299.jpg","cubata cubalitro para todos","12","6","6");
+DELETE FROM logros WHERE id = "1";
+
+
+select * from logros;
 
 insert into clientediscoteca values ("1","80","1");
 insert into clientediscoteca values ("1","20","2");
 insert into clientediscoteca values ("2","50","1");
 insert into clientediscoteca values ("3","200","3");
+
+SELECT * FROM PRODUCTO;
+SELECT * FROM USUARIO;
 
 CREATE TABLE UsuarioPuntos (
   usuario_id INT,
@@ -35,23 +46,32 @@ CREATE TABLE UsuarioPuntos (
   FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
+SELECT * FROM USUARIO;
 
+INSERT INTO usuariopuntos values("8","0");
 
-
-
+DROP TABLE PREMIO;
 
 CREATE TABLE Premio (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  marca VARCHAR(100),
   nombre VARCHAR(100),
+  marca VARCHAR(100),
   descripcion VARCHAR(200),
-  puntosNecesarios INT
+  puntosNecesarios INT,
+	Disponible VARCHAR(5),
+  imagenUrl VARCHAR(250),
+	idDiscoteca INT,
+  FOREIGN KEY (idDiscoteca) REFERENCES Discoteca(id)
 );
-insert into premio(marca,nombre,descripcion,puntosNecesarios) values ("Beefeeter","Premio Principiante","Copa de tubo de Beefeeter","100");
-insert into premio(marca,nombre,descripcion,puntosNecesarios) values ("Almirante","Premio Principiante","Copa de tubo de Almirante","100");
-insert into premio(marca,nombre,descripcion,puntosNecesarios) values ("Champan Dior","Premio Olimpo","Champan Olimpo premium","1500");
 
- 
+insert into premio(nombre,marca,descripcion,puntosNecesarios,Disponible,imagenUrl,idDiscoteca) values ("COPA VASO ANCHO","PRIMERAS MARCAS","COPA DE VASO ANCHO DE TU ALCOHOL FAVORITO","100","true","https://www.47cocktailbar.es/wp-content/uploads/2019/11/gin-tonic-hibiscus-new-400x509.jpg",null);
+insert into premio(nombre,marca,descripcion,puntosNecesarios,Disponible,imagenUrl,idDiscoteca) values ("2 COPAS VASO ANCHO","PRIMERAS MARCAS","2 COPAS DE VASO ANCHO DE TU ALCOHOL FAVORITO","200","true","https://s2.abcstatics.com/media/espana/2016/12/09/copas-discoteca-madrid-ktQ--620x349@abc.jpg","1");
+insert into premio(nombre,marca,descripcion,puntosNecesarios,Disponible,imagenUrl,idDiscoteca) values ("RESERVADO VIP 4 PERSONAS","VIP","RESERVADO VIP PARA 4 PERSONAS","5000","true","https://w7.pngwing.com/pngs/166/759/png-transparent-ticket-very-important-person-concert-music-festival-others.png","3");
+INSERT INTO premio (nombre, marca, descripcion, puntosNecesarios, Disponible, imagenUrl, idDiscoteca)VALUES ("BOTELLA CHAMPAGNE MOET", "MOET", "BOTELLA DEL CHAMPAGNE MOET", 800, "true", "https://lh3.googleusercontent.com/p/AF1QipOdy59gO-k2MUsrDSyGW8VILg1o8bXwZbLLwwkP=w768-h768-n-o-v1", 2);
+
+SELECT * FROM premio;
+
+DELETE FROM Premio WHERE id=6;
 
 -- Crear la tabla Producto
 CREATE TABLE Producto (
@@ -59,14 +79,22 @@ CREATE TABLE Producto (
   nombre VARCHAR(100),
   descripcion VARCHAR(200),
   puntosPorCompra INT,
-  precioProducto DECIMAL(10, 2)
+  precioProducto DECIMAL(10, 2),
+  imagenUrl VARCHAR(250)
 );
+
+DELETE FROM Producto WHERE id = '1';
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Beefeeter","Alcohol ginebra","20","10");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Brugal","Alcohol ron","20","10");
-insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Red Label","Alcohol wishky","25","15");
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Red Label","Alcohol wishkyDD20""15")
 ALTER TABLE producto ADD imagenUrl VARCHAR(255);
-insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Brugal","ron barato resacosos","20","10","https://www.divinodrinks.com/834-large_default/ron-brugal-anejo.jpg");
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Brugal","Alcohol RON","20","10","https://www.divinodrinks.com/834-large_default/ron-brugal-anejo.jpg");
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Red Label","Alcohol WISHKY","25","10","https://sgfm.elcorteingles.es/SGFM/dctm/MEDIA03/202007/06/00118721000133____8__600x600.jpg");
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Beefeeter","Alcohol GINEBRA","15","10","https://admin.bodeboca.com/sites/default/files/bot-beefeater-70-nuevaimagen.jpg");
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Tequila","Alcohol CHUPITO","5","2","https://media.gettyimages.com/id/157337398/es/foto/primer-plano-de-la-toma-de-vidrio-y-limes.jpg?s=612x612&w=gi&k=20&c=ZEa3BcHuqL8Zh_y81WrgCnJr7T3GqRWhoXjjDZHTA6U=");
+
 -- Crear la tabla Evento
+SELECT * FROM PRODUCTO;
 CREATE TABLE Evento (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100),
@@ -89,6 +117,7 @@ UPDATE Evento
 SET imagen = "https://visitestepona.eu/wp-content/uploads/2019/12/CARTEL-FINAL-LOS-ALAMOS-2019_V04.png"
 WHERE nombre = "Los Alamos beach festival";
 
+SELECT * FROM EVENTO;
 
 SET SQL_SAFE_UPDATES = 0;
 
@@ -109,8 +138,8 @@ CREATE TABLE Discoteca (
   pais VARCHAR(100),
   telefono VARCHAR(20)
 );
-SELECT * FROM DISCOTECA
-insert into
+SELECT * FROM DISCOTECA;
+
 -- Crear la tabla Usuario
 CREATE TABLE Usuario (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -127,7 +156,7 @@ insert into user values("prueba@prueba.es","123123","Prueba");
 insert into usuario (nick,nombre,correo,contraseña,localidad,direccion,qrUsuario,apellidos) values ("Miguel_Granada","Miguel","miguelcenec@gmail.com","1234","Malaga","granada 1","qr-2","Paramos");
 SELECT * FROM discoteca;
 
-CREATE TABLE wedrink.compras (
+CREATE TABLE compras (
   id INT AUTO_INCREMENT PRIMARY KEY,
   usuario_nick VARCHAR(255),
   producto_nombre VARCHAR(255),

@@ -36,53 +36,62 @@ public class PantallaLogin extends  PanelMadre {
 	
 
 	public PantallaLogin(Ventana v) {
-		this.ventana = v;
-		setLayout(null);
+	    this.ventana = v;
+	    setLayout(null);
 
-		JButton botonLogin = new JButton("Iniciar Sesión");
-		botonLogin.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        String correo = campoUsuario.getText();
-		        String contraseña = new String(campoContraseña.getPassword());
-		        System.out.println(correo + " : " + contraseña);
-		        try {
-		        	String email = campoUsuario.getText();
-		              String password = new String(campoContraseña.getPassword());
-		              // Verificar que los campos no estén vacíos
-		              if (email.isEmpty() || password.isEmpty()) {
-		                  JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos obligatorios");
-		                  return;
-		              }	
-		            Usuario usuario = new Usuario(correo, contraseña);
-		            // Comparar contraseñas sin tener en cuenta espacios en blanco y diferencias de mayúsculas y minúsculas
-		            if (usuario.getContraseña().trim().equalsIgnoreCase(contraseña.trim())) {
-		                ventana.clienteLogado = usuario;
-		                JOptionPane.showMessageDialog(ventana, "Bienvenid@, " + ventana.clienteLogado.getNick(),
-		                        "Inicio de sesión exitoso", JOptionPane.INFORMATION_MESSAGE);
-		                ventana.cambiarAPantalla(VentanaUsuario.class);
-		            } else {
-		                JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
-		                        JOptionPane.ERROR_MESSAGE);
-		            }
-		        } catch (SQLException e1) {
-		            JOptionPane.showMessageDialog(ventana, e1.getMessage(), "Login fallido", JOptionPane.ERROR_MESSAGE);
-		            e1.printStackTrace();
-		        } catch (UsuarioNoExisteException e1) {
-		            JOptionPane.showMessageDialog(ventana, "El cliente no existe", "Login fallido",
-		                    JOptionPane.ERROR_MESSAGE);
-		            e1.printStackTrace();
-		        } catch (ContraseñaInvalidaException e1) {
-		            JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
-		                    JOptionPane.ERROR_MESSAGE);
-		            e1.printStackTrace();
-		        } catch (ConexionFallidaException e1) {
-		            JOptionPane.showMessageDialog(ventana, "Error al conectar a la base de datos", "Login fallido",
-		                    JOptionPane.ERROR_MESSAGE);
-		            e1.printStackTrace();
-		        }
-		    }
-		});
+	    JButton botonLogin = new JButton("Iniciar Sesión");
+	    botonLogin.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            String correo = campoUsuario.getText();
+	            String contraseña = new String(campoContraseña.getPassword());
+	            System.out.println(correo + " : " + contraseña);
+	            try {
+	                String email = campoUsuario.getText();
+	                String password = new String(campoContraseña.getPassword());
+	                // Verificar que los campos no estén vacíos
+	                if (email.isEmpty() || password.isEmpty()) {
+	                    JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos obligatorios");
+	                    return;
+	                }
+	                Usuario usuario = new Usuario(correo, contraseña);
+	                // Comparar contraseñas sin tener en cuenta espacios en blanco y diferencias de mayúsculas y minúsculas
+	                if (usuario.getContraseña().trim().equalsIgnoreCase(contraseña.trim())) {
+	                    ventana.clienteLogado = usuario;
+	                    JOptionPane.showMessageDialog(ventana, "Bienvenid@, " + ventana.clienteLogado.getNick(),
+	                            "Inicio de sesión exitoso", JOptionPane.INFORMATION_MESSAGE);
+	                    
+	                    if (ventana.clienteLogado.getNick().equalsIgnoreCase("admin")) {
+	                        ventana.cambiarAPantalla(VentanaAdmins.class);
+	                    } else {
+	                        ventana.cambiarAPantalla(VentanaUsuario.class);
+	                    }
+	                } else {
+	                    JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
+	                            JOptionPane.ERROR_MESSAGE);
+	                }
+	            } catch (SQLException e1) {
+	                JOptionPane.showMessageDialog(ventana, e1.getMessage(), "Login fallido", JOptionPane.ERROR_MESSAGE);
+	                e1.printStackTrace();
+	            } catch (UsuarioNoExisteException e1) {
+	                JOptionPane.showMessageDialog(ventana, "El cliente no existe", "Login fallido",
+	                        JOptionPane.ERROR_MESSAGE);
+	                e1.printStackTrace();
+	            } catch (ContraseñaInvalidaException e1) {
+	                JOptionPane.showMessageDialog(ventana, "La contraseña no es correcta", "Login fallido",
+	                        JOptionPane.ERROR_MESSAGE);
+	                e1.printStackTrace();
+	            } catch (ConexionFallidaException e1) {
+	                JOptionPane.showMessageDialog(ventana, "Error al conectar a la base de datos", "Login fallido",
+	                        JOptionPane.ERROR_MESSAGE);
+	                e1.printStackTrace();
+	            }
+	        }
+	    });
+	    // Establecer las coordenadas y dimensiones del botón
+	    botonLogin.setBounds(100, 150, 200, 30);
+	    add(botonLogin);
+	
 		botonLogin.setToolTipText("Pínchame para iniciar sesión");
 		botonLogin.setForeground(new Color(0, 64, 0));
 		botonLogin.setFont(new Font("Arial", Font.BOLD, 18));

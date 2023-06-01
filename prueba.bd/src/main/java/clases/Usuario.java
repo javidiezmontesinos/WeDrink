@@ -123,6 +123,7 @@ public class Usuario extends SuperClaseLugar {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+        
     }
 
     public static void registrar_usuario(String nick, String contraseña, String nombre, String correo, String localidad, String direccion, String qrCode, String apellidos)
