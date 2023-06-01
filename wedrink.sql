@@ -23,11 +23,13 @@ FOREIGN KEY (id_producto) REFERENCES producto(id),
 FOREIGN KEY (id_cliente) REFERENCES usuariopuntos(usuario_id)
 );
 ALTER TABLE logros ADD logrocompletado VARCHAR(5);
-insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente) values ("BICHUPITO","https://www.elotrolado.net/w/images/4/41/Call_of_Duty_Black_Ops_II_-_prestigio1.png","dos chupitos en la misma noche","10","9","2");
+insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente,logroCompletado) values ("BICHUPITO","https://www.divinodrinks.com/834-large_default/ron-brugal-anejo.jpg","dos chupitos en la misma noche","10","9","2","true");
 
-insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente) values ("HACTRICK GINEBRINOS","https://media-cdn.tripadvisor.com/media/photo-s/06/d6/84/e8/vinos-de-bellota.jpg","3 copas","30","8","2");
-insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente) values ("BIG CUBATA","https://cadena100-cdnmed.agilecontent.com/resources/jpg/9/9/1623830522299.jpg","cubata cubalitro para todos","12","6","6");
-DELETE FROM logros WHERE id = "1";
+insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente,logroCompletado) values ("HACTRICK GINEBRINOS","https://media-cdn.tripadvisor.com/media/photo-s/06/d6/84/e8/vinos-de-bellota.jpg","3 copas","30","8","2","true");
+
+insert into logros(nombre,imagenlogro,descripcion,puntos,id_producto,id_cliente,logroCompletado) values ("BIG CUBATA","https://cadena100-cdnmed.agilecontent.com/resources/jpg/9/9/1623830522299.jpg","cubata cubalitro para todos","12","6","6","true");
+
+DELETE FROM logros WHERE id = "6";
 
 
 select * from logros;
