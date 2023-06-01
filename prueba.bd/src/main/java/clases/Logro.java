@@ -17,7 +17,7 @@ public class Logro extends SuperClaseInfo {
 	private int puntosObtenidosLogros;
 	private boolean logroCompletado;
 
-	public Logro(String nombre, String descripcion, String imagenUrl, int puntosObtenidosLogros,
+	public Logro(String nombre, String imagenUrl, String descripcion, int puntosObtenidosLogros,
 			boolean logroCompletado) {
 		super(nombre, descripcion);
 		this.imagenUrl = imagenUrl;
@@ -72,6 +72,10 @@ public class Logro extends SuperClaseInfo {
 	public void setId_logros(int id_logros) {
 		this.id_logros = id_logros;
 	}
+
+	
+
+	
 
 	public String getImagenUrl() {
 		return imagenUrl;

@@ -20,25 +20,16 @@ public class ClienteDiscoteca {
 		this.usuarioCliente = usuarioCliente;
 	}
 
-	public int getPuntosAcumuladosDiscoteca(int idCliente) {
-        String sql = "SELECT puntosAcumulados FROM ClienteDiscoteca WHERE id_cliente = ?";
+	
 
-        try (Connection conn = DAO.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	
 
-            pstmt.setInt(1, idCliente);
 
-            ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                puntosAcumuladosDiscoteca = rs.getInt("puntosAcumulados");
-            }
-        } catch (SQLException | ConexionFallidaException e) {
-            System.out.println(e.getMessage());
-        }
 
-        return puntosAcumuladosDiscoteca;
-    }
+	public int getPuntosAcumuladosDiscoteca() {
+		return puntosAcumuladosDiscoteca;
+	}
 
 	public void setPuntosAcumuladosDiscoteca(int puntosAcumuladosDiscoteca) {
 		this.puntosAcumuladosDiscoteca = puntosAcumuladosDiscoteca;
@@ -64,6 +55,29 @@ public class ClienteDiscoteca {
 	public String toString() {
 		return "ClienteDiscoteca [puntosAcumuladosDiscoteca=" + puntosAcumuladosDiscoteca + ", discoteca=" + discoteca
 				+ ", usuarioCliente=" + usuarioCliente + "]";
+	}
+
+	public int PuntosAcumuladosDiscoteca() {
+	    int puntosAcumulados = 0;
+	    
+	    try (Connection connection = DAO.connect()) {
+	        String query = "SELECT puntos FROM PuntosEnDiscoteca " +
+	                       "INNER JOIN Usuario ON PuntosEnDiscoteca.usuario_id = Usuario.id " +
+	                       "INNER JOIN Discoteca ON PuntosEnDiscoteca.discoteca_id = Discoteca.id " +
+	                       "WHERE Usuario.correo = ? AND Discoteca.cif = ?";
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, usuarioCliente.getCorreo());
+	        statement.setString(2, discoteca.getCif());
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        if (resultSet.next()) {
+	            puntosAcumulados = resultSet.getInt("puntos");
+	        }
+	    } catch (SQLException | ConexionFallidaException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return puntosAcumulados;
 	}
 
 }

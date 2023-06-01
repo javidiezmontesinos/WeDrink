@@ -13,6 +13,7 @@ import clases.Premio;
 import clases.Producto;
 import clases.Usuario;
 import clases.UsuarioPuntos;
+import exceptions.ConexionFallidaException;
 import clases.Producto;
 import javax.swing.*;
 import java.awt.*;
@@ -212,8 +213,7 @@ public class VentanaUsuario extends JPanel {
 							// Crear un JCheckBox con la imagen y el nombre y descripción del producto
 
 							JCheckBox logroCheckBox = new JCheckBox(
-									logro.getNombre() + " - " + logro.getDescripcion() + " - " + logro.getPuntosObtenidosLogros(),
-									resizedLogroIcon);
+									logro.getNombre() + " - " + logro.getDescripcion() + " - " + logro.getPuntosObtenidosLogros(),resizedLogroIcon);
 
 							panelProductos.add(logroCheckBox);
 
@@ -331,9 +331,93 @@ public class VentanaUsuario extends JPanel {
 		ImageIcon resizedIcon8 = new ImageIcon(resizedImage8);
 
 		JButton boton8 = new JButton(resizedIcon8);
+		
 		panelBotonesInferior.add(boton8);
 
 		panelCentral.add(panelBotonesInferior, BorderLayout.SOUTH);
+		
+		boton8.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			   
+			        // Crear un nuevo panel con los datos del usuario y campos de texto editables
+			        JPanel panelInfoUsuario = new JPanel();
+			        panelInfoUsuario.setLayout(new BoxLayout(panelInfoUsuario, BoxLayout.Y_AXIS));
+
+			        JLabel labelNick = new JLabel("Nick: " + usuarioActual.getNick());
+			        JLabel labelNombre = new JLabel("Nombre: " + usuarioActual.getNombre());
+			        JLabel labelApellidos = new JLabel("Apellidos: " + usuarioActual.getApellidos());
+			        JLabel labelCorreo = new JLabel("Correo: " + usuarioActual.getCorreo());
+			        JLabel labelPuntos = new JLabel("Puntos: " + usuarioActual.getPuntosTotales());
+
+			        JTextField textFieldNick = new JTextField(usuarioActual.getNick());
+			        JTextField textFieldNombre = new JTextField(usuarioActual.getNombre());
+			        JTextField textFieldApellidos = new JTextField(usuarioActual.getApellidos());
+			        JTextField textFieldCorreo = new JTextField(usuarioActual.getCorreo());
+
+			        // Agregar campo para la contraseña actual
+			        JPasswordField passwordFieldActual = new JPasswordField();
+			        JLabel labelContraseñaActual = new JLabel("Contraseña actual:");
+
+			        // Agregar campo para la nueva contraseña
+			        JPasswordField passwordFieldNueva = new JPasswordField();
+			        JLabel labelNuevaContraseña = new JLabel("Nueva contraseña:");
+
+			        JButton botonGuardarCambios = new JButton("Guardar cambios");
+
+			        botonGuardarCambios.addActionListener(new ActionListener() {
+			            @Override
+			            public void actionPerformed(ActionEvent e) {
+			                // Verificar la contraseña actual
+			                char[] contraseñaActualChars = passwordFieldActual.getPassword();
+			                String contraseñaActual = new String(contraseñaActualChars);
+			                if (!contraseñaActual.equals(usuarioActual.getContraseña())) {
+			                    JOptionPane.showMessageDialog(null, "Error de contraseña actual", "Error", JOptionPane.ERROR_MESSAGE);
+			                    return;
+			                }
+
+			                // Obtener la nueva contraseña
+			                char[] nuevaContraseñaChars = passwordFieldNueva.getPassword();
+			                String nuevaContraseña = new String(nuevaContraseñaChars);
+
+			                try {
+			                    usuarioActual.setNick(textFieldNick.getText());
+			                    usuarioActual.setNombre(textFieldNombre.getText());
+			                    usuarioActual.setApellidos(textFieldApellidos.getText());
+			                    usuarioActual.setCorreo(textFieldCorreo.getText());
+
+			                    // Verificar si se ingresó una nueva contraseña y establecerla
+			                    if (!nuevaContraseña.isEmpty()) {
+			                        usuarioActual.setContraseña(nuevaContraseña);
+			                    }
+
+			                    // Aquí puedes implementar el código necesario para actualizar la información en tu base de datos
+			                } catch (ConexionFallidaException e1) {
+			                    e1.printStackTrace();
+			                }
+			            }
+			        });
+
+			        panelInfoUsuario.add(labelNick);
+			        panelInfoUsuario.add(textFieldNick);
+			        panelInfoUsuario.add(labelNombre);
+			        panelInfoUsuario.add(textFieldNombre);
+			        panelInfoUsuario.add(labelApellidos);
+			        panelInfoUsuario.add(textFieldApellidos);
+			        panelInfoUsuario.add(labelCorreo);
+			        panelInfoUsuario.add(textFieldCorreo);
+			        panelInfoUsuario.add(labelPuntos);
+			        panelInfoUsuario.add(labelContraseñaActual); // Agregar etiqueta para la contraseña actual
+			        panelInfoUsuario.add(passwordFieldActual); // Agregar campo para la contraseña actual
+			        panelInfoUsuario.add(labelNuevaContraseña); // Agregar etiqueta para la nueva contraseña
+			        panelInfoUsuario.add(passwordFieldNueva); // Agregar campo para la nueva contraseña
+			        panelInfoUsuario.add(botonGuardarCambios);
+
+
+		        // Aquí puedes agregar el panelInfoUsuario a un JOptionPane, a un JFrame nuevo, o a donde prefieras
+		        JOptionPane.showMessageDialog(null, panelInfoUsuario, "Información del usuario", JOptionPane.PLAIN_MESSAGE);
+		    }
+		});
 
 		// Agregar paneles al panel principal
 		add(panelSuperior, BorderLayout.NORTH);

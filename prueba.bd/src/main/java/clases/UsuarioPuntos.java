@@ -22,14 +22,7 @@ public class UsuarioPuntos {
 		this.puntosTotales = puntosTotales;
 	}
 
-	public void puntosTotalesUsuario(List<ClienteDiscoteca> clienteDiscotecas) {
-		puntosTotales = 0;
-		for (ClienteDiscoteca cliente : clienteDiscotecas) {
-			if (cliente.getUsuarioCliente().equals(this.usuarioPnts)) {
-				puntosTotales += cliente.getPuntosAcumuladosDiscoteca(puntosTotales);
-			}
-		}
-	}
+
 
 	public static List<UsuarioPuntos> obtenerPuntosTotales() {
 	    List<UsuarioPuntos> puntos = new ArrayList<>();
@@ -57,7 +50,7 @@ public class UsuarioPuntos {
 	            String direccion = resultSet.getString("direccion");
 
 	            HashMap<String, ClienteDiscoteca> puntosEnDiscoteca = new HashMap<>(); 
-	            HashMap<String, ClienteDiscoteca> puntosTotales = new HashMap<>();
+	            HashMap<String, UsuarioPuntos> puntosTotales = new HashMap<>();
 
 	            Usuario usuario = new Usuario(nombre, descripcion, localidad, direccion, nick, qrCode, contraseña, apellidos, correo, puntosEnDiscoteca, puntosTotales);
 	            UsuarioPuntos usuarioPuntos = new UsuarioPuntos(usuario, puntost);

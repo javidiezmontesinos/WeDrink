@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import exceptions.ConexionFallidaException;
 import exceptions.ContraseñaInvalidaException;
@@ -22,11 +23,11 @@ public class Usuario extends SuperClaseLugar {
     private String correo;
     private String contraseña;
     private HashMap<String, ClienteDiscoteca> puntosEnDiscoteca;
-    private HashMap<String, ClienteDiscoteca> puntosTotales;
+    private HashMap<String, UsuarioPuntos> puntosTotales;
 
     public Usuario(String nombre, String descripcion, String localidad, String direccion, String nick,
             String qrCode, String contraseña, String apellidos, String correo,
-            HashMap<String, ClienteDiscoteca> puntosEnDiscoteca, HashMap<String, ClienteDiscoteca> puntosTotales) {
+            HashMap<String, ClienteDiscoteca> puntosEnDiscoteca, HashMap<String, UsuarioPuntos> puntosTotales) {
         super(nombre, descripcion, localidad, direccion);
         this.nick = nick;
         this.qrCode = qrCode;
@@ -121,11 +122,22 @@ public class Usuario extends SuperClaseLugar {
         return contraseña;
     }
 
-    public void setContraseña(String contraseña) {
+    public void setContraseña(String contraseña) throws ConexionFallidaException {
         this.contraseña = contraseña;
-        
+        // Actualizar en la base de datos
+        try (Connection connection = DAO.connect()) {
+            String query = "UPDATE Usuario SET contraseña = ? WHERE correo = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, contraseña);
+            statement.setString(2, correo);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("El campo 'contraseña' se actualizó en la base de datos");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
     public static void registrar_usuario(String nick, String contraseña, String nombre, String correo, String localidad, String direccion, String qrCode, String apellidos)
             throws SQLException, UsuarioNoExisteException, ConexionFallidaException {
         try (Connection connection = DAO.connect()) {
@@ -209,20 +221,60 @@ public class Usuario extends SuperClaseLugar {
         return apellidos;
     }
 
-    public void setNick(String nick) {
+    public void setNick(String nick) throws ConexionFallidaException {
         this.nick = nick;
+        // Actualizar en la base de datos
+        try (Connection connection = DAO.connect()) {
+            String query = "UPDATE Usuario SET nick = ? WHERE correo = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, nick);
+            statement.setString(2, correo);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("El campo 'nick' se actualizó en la base de datos");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
     }
 
-    public void setCorreo(String correo) {
+    public void setCorreo(String correo) throws ConexionFallidaException {
         this.correo = correo;
+        // Actualizar en la base de datos
+        try (Connection connection = DAO.connect()) {
+            String query = "UPDATE Usuario SET correo = ? WHERE correo = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correo);
+            statement.setString(2, correo);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("El campo 'correo' se actualizó en la base de datos");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setApellidos(String apellidos) {
+    public void setApellidos(String apellidos) throws ConexionFallidaException {
         this.apellidos = apellidos;
+        // Actualizar en la base de datos
+        try (Connection connection = DAO.connect()) {
+            String query = "UPDATE Usuario SET apellidos = ? WHERE correo = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, apellidos);
+            statement.setString(2, correo);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("El campo 'apellidos' se actualizó en la base de datos");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getCorreo() {
@@ -235,17 +287,94 @@ public class Usuario extends SuperClaseLugar {
 
     public void setPuntosEnDiscoteca(HashMap<String, ClienteDiscoteca> puntosEnDiscoteca) {
         this.puntosEnDiscoteca = puntosEnDiscoteca;
+        // Actualizar en la base de datos
+        try (Connection connection = DAO.connect()) {
+            // Primero, obtener el ID del usuario basado en el correo
+            String selectQuery = "SELECT id FROM Usuario WHERE correo = ?";
+            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
+            selectStatement.setString(1, correo); // Suponiendo que tienes una variable de instancia "correo" para identificar al usuario
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int usuarioId = resultSet.getInt("id");
+
+                // Luego, eliminar los puntos en discoteca existentes del usuario en la base de datos
+                String deleteQuery = "DELETE FROM PuntosEnDiscoteca WHERE usuario_id = ?";
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+                deleteStatement.setInt(1, usuarioId);
+                deleteStatement.executeUpdate();
+
+                // Por último, insertar los nuevos puntos en discoteca del usuario en la base de datos
+                String insertQuery = "INSERT INTO PuntosEnDiscoteca (usuario_id, discoteca_id, puntos) VALUES (?, ?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+                for (Entry<String, ClienteDiscoteca> entry : puntosEnDiscoteca.entrySet()) {
+                    String discotecaId = entry.getKey();
+                    ClienteDiscoteca clienteDiscoteca = entry.getValue();
+                    int puntos = clienteDiscoteca.getPuntosAcumuladosDiscoteca(); // Asegúrate de obtener los puntos correctamente desde el objeto ClienteDiscoteca
+
+                    insertStatement.setInt(1, usuarioId);
+                    insertStatement.setString(2, discotecaId);
+                    insertStatement.setInt(3, puntos);
+                    insertStatement.executeUpdate();
+                }
+
+                System.out.println("Los puntos en discoteca se actualizaron en la base de datos");
+            } else {
+                System.out.println("No se encontró el usuario en la base de datos");
+            }
+        } catch (SQLException | ConexionFallidaException e) {
+            e.printStackTrace();
+        }
     }
 
-    public HashMap<String, ClienteDiscoteca> getPuntosTotales() {
-        return puntosTotales;
-    }
+    
 
-    public void setPuntosTotales(HashMap<String, ClienteDiscoteca> puntosTotales) {
+    public HashMap<String, UsuarioPuntos> getPuntosTotales() {
+		return puntosTotales;
+	}
+
+    public void setPuntosTotales(HashMap<String, UsuarioPuntos> puntosTotales) {
         this.puntosTotales = puntosTotales;
+        
+        try (Connection connection = DAO.connect()) {
+            // Primero, obtener el ID del usuario basado en el correo
+            String selectQuery = "SELECT id FROM Usuario WHERE correo = ?";
+            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
+            selectStatement.setString(1, correo); // Suponiendo que tienes una variable de instancia "correo" para identificar al usuario
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int usuarioId = resultSet.getInt("id");
+
+                // Luego, eliminar los puntos totales existentes del usuario en la base de datos
+                String deleteQuery = "DELETE FROM usuariopuntos WHERE usuario_id = ?";
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+                deleteStatement.setInt(1, usuarioId);
+                deleteStatement.executeUpdate();
+
+                // Por último, insertar los nuevos puntos totales del usuario en la base de datos
+                String insertQuery = "INSERT INTO usuariopuntos (usuario_id, puntos) VALUES (?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+                for (Entry<String, UsuarioPuntos> entry : puntosTotales.entrySet()) {
+                    String nombreDiscoteca = entry.getKey();
+                    UsuarioPuntos usuarioPuntos = entry.getValue();
+                    int puntos = usuarioPuntos.getPuntosTotales(); // Asegúrate de obtener los puntos correctamente desde el objeto UsuarioPuntos
+
+                    insertStatement.setInt(1, usuarioId);
+                    insertStatement.setInt(2, puntos);
+                    insertStatement.executeUpdate();
+                }
+
+                System.out.println("Los puntos totales se actualizaron en la base de datos");
+            } else {
+                System.out.println("No se encontró el usuario en la base de datos");
+            }
+        } catch (SQLException | ConexionFallidaException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
+	@Override
     public String toString() {
         return "Usuario [nick=" + nick + ", qrCode=" + qrCode + ", apellidos=" + apellidos + ", correo=" + correo
                 + ", puntosEnDiscoteca=" + puntosEnDiscoteca + ", puntosTotales=" + puntosTotales + "]";
