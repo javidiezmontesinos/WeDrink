@@ -2,10 +2,12 @@ package clases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import exceptions.ConexionFallidaException;
@@ -22,7 +24,33 @@ public class Producto extends SuperClaseInfo {
 		this.precioProducto = precioProducto;
 		this.imagenUrl = imagenUrl; // Inicializar el nuevo atributo
 	}
+	public static void registrarProducto(String nombre, String descripcion, int puntosPorCompra, double precioProducto, String imagenUrl)
+			throws SQLException, ConexionFallidaException {
+		try (Connection connection = DAO.connect()) {
 
+			String checkQuery = "SELECT * FROM Producto WHERE nombre = ? AND imagenUrl = ?";
+			PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
+			checkStatement.setString(1, nombre);
+			checkStatement.setString(2, imagenUrl);
+			ResultSet resultSet = checkStatement.executeQuery();
+			if (resultSet.next()) {
+				throw new SQLException("El evento ya existe");
+			}
+
+			String query = "INSERT INTO Producto (nombre, descripcion, puntosPorCompra, precioProducto,imagenUrl) VALUES (?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, nombre);
+			statement.setString(2, descripcion);
+			statement.setInt(3, puntosPorCompra);
+			statement.setDouble(4, precioProducto);
+			statement.setString(5, imagenUrl);
+
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("Producto en promocion registrado exitosamente!");
+			}
+		}
+	}
 	public int getPuntosPorCompra() {
 		return puntosPorCompra;
 	}

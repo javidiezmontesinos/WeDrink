@@ -9,9 +9,7 @@ public class SuperClaseInfo {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 	}
-	public void SuperClaseInfo() {
-		
-	}
+	
 	public String getNombre() {
 		return nombre;
 	}
