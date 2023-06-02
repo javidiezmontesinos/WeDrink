@@ -85,6 +85,21 @@ public class Premio extends SuperClaseInfo {
 	public void setImagenUrl(String imagenUrl) {
 		this.imagenUrl = imagenUrl;
 	}
+	public static void borrarPremio(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
+	    try (Connection connection = DAO.connect()) {
+	        String query = "DELETE FROM Premio WHERE nombre = ? AND imagenUrl = ?";
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, nombre);
+	        statement.setString(2, imagenUrl);
+
+	        int rowsDeleted = statement.executeUpdate();
+	        if (rowsDeleted > 0) {
+	            System.out.println("Premio eliminado exitosamente!");
+	        } else {
+	            throw new SQLException("El Premio no existe");
+	        }
+	    }
+	}
 
 	public String getMarca() {
 		return marca;

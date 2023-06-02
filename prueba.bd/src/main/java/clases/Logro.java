@@ -1,6 +1,7 @@
 package clases;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,13 +41,16 @@ public class Logro extends SuperClaseInfo {
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM logros");
 
 			while (resultSet.next()) {
-				
+
 				String nombre = resultSet.getString("nombre");
 				String imagenUrl = resultSet.getString("imagenlogro");
 				String descripcion = resultSet.getString("descripcion");
 				int puntosObtenidosLogros = resultSet.getInt("puntos");
 				boolean logroCompletado = resultSet.getBoolean("logrocompletado");
-				Logro logro = new Logro(nombre, imagenUrl, descripcion,puntosObtenidosLogros,logroCompletado); // Pasar imagenUrl al constructor
+				Logro logro = new Logro(nombre, imagenUrl, descripcion, puntosObtenidosLogros, logroCompletado); // Pasar
+																													// imagenUrl
+																													// al
+																													// constructor
 				logros.add(logro);
 			}
 
@@ -61,6 +65,51 @@ public class Logro extends SuperClaseInfo {
 		return logros;
 	}
 
+	public static void registrarLogro(String nombre, String imagenUrl, String descripcion, double puntosObtenidosLogros,
+			boolean logroCompletado) throws SQLException, ConexionFallidaException {
+		try (Connection connection = DAO.connect()) {
+
+			String checkQuery = "SELECT * FROM Logros WHERE nombre = ? AND imagenlogro = ?";
+			PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
+			checkStatement.setString(1, nombre);
+			checkStatement.setString(2, imagenUrl);
+			ResultSet resultSet = checkStatement.executeQuery();
+			if (resultSet.next()) {
+				throw new SQLException("El Logro ya existe");
+			}
+
+			String query = "INSERT INTO Logros (nombre, imagenlogro, descripcion, puntos, logrocompletado) VALUES (?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, nombre);
+			statement.setString(2, imagenUrl);
+			statement.setString(3, descripcion);
+			statement.setDouble(4, puntosObtenidosLogros);
+			statement.setBoolean(5, logroCompletado);
+			statement.setString(6, imagenUrl);
+
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("Logro registrado exitosamente!");
+			}
+		}
+	}
+
+	public static void borrarLogro(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
+		try (Connection connection = DAO.connect()) {
+			String query = "DELETE FROM Logros WHERE nombre = ? AND imagenlogro = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, nombre);
+			statement.setString(2, imagenUrl);
+
+			int rowsDeleted = statement.executeUpdate();
+			if (rowsDeleted > 0) {
+				System.out.println("Logro eliminado exitosamente!");
+			} else {
+				throw new SQLException("El logro no existe");
+			}
+		}
+	}
+
 	public void setLogroCompletado(boolean logroCompletado) {
 		this.logroCompletado = logroCompletado;
 	}
@@ -72,10 +121,6 @@ public class Logro extends SuperClaseInfo {
 	public void setId_logros(int id_logros) {
 		this.id_logros = id_logros;
 	}
-
-	
-
-	
 
 	public String getImagenUrl() {
 		return imagenUrl;

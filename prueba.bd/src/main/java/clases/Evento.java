@@ -82,10 +82,10 @@ public class Evento extends SuperClaseLugar {
 			throws SQLException, ConexionFallidaException {
 		try (Connection connection = DAO.connect()) {
 
-			String checkQuery = "SELECT * FROM Evento WHERE nombre = ? AND fecha = ?";
+			String checkQuery = "SELECT * FROM Evento WHERE nombre = ? AND imagen = ?";
 			PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
 			checkStatement.setString(1, nombre);
-			checkStatement.setDate(2, new java.sql.Date(fecha.getTime()));
+			checkStatement.setString(2,imagenUrl);
 			ResultSet resultSet = checkStatement.executeQuery();
 			if (resultSet.next()) {
 				throw new SQLException("El evento ya existe");
@@ -133,21 +133,22 @@ public class Evento extends SuperClaseLugar {
 		}
 	}
 
-	public void borrarEvento() {
-		try {
-			Connection connection = DAO.connect();
-			PreparedStatement statement = connection.prepareStatement("DELETE FROM evento WHERE imagen = ?");
+	public static void borrarEvento(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
+	    try (Connection connection = DAO.connect()) {
+	        String query = "DELETE FROM Evento WHERE nombre = ? AND imagen = ?";
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, nombre);
+	        statement.setString(2, imagenUrl);
 
-			statement.setString(1, this.getImagenUrl());
-
-			statement.executeUpdate();
-
-			statement.close();
-			connection.close();
-		} catch (SQLException | ConexionFallidaException e) {
-			e.printStackTrace();
-		}
+	        int rowsDeleted = statement.executeUpdate();
+	        if (rowsDeleted > 0) {
+	            System.out.println("Evento eliminado exitosamente!");
+	        } else {
+	            throw new SQLException("El evento no existe");
+	        }
+	    }
 	}
+	
 
 	public Date getFecha() {
 		return fecha;

@@ -51,6 +51,21 @@ public class Producto extends SuperClaseInfo {
 			}
 		}
 	}
+	public static void borrarProducto(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
+	    try (Connection connection = DAO.connect()) {
+	        String query = "DELETE FROM Producto WHERE nombre = ? AND imagenUrl = ?";
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, nombre);
+	        statement.setString(2, imagenUrl);
+
+	        int rowsDeleted = statement.executeUpdate();
+	        if (rowsDeleted > 0) {
+	            System.out.println("Producto eliminado exitosamente!");
+	        } else {
+	            throw new SQLException("El Producto no existe");
+	        }
+	    }
+	}
 	public int getPuntosPorCompra() {
 		return puntosPorCompra;
 	}
