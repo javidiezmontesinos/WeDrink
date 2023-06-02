@@ -269,6 +269,7 @@ public class VentanaUsuario extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				limpiarPanelProductos();
 				List<Producto> productos = Producto.obtenerProductos();
 				JTextField nombreCategoria = new JTextField("Productos en promocion en tu localidad");
 				panelProductos.add(nombreCategoria);

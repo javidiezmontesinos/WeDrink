@@ -85,18 +85,21 @@ CREATE TABLE Producto (
   imagenUrl VARCHAR(250)
 );
 
+UPDATE Producto
+SET imagenUrl = 'https://www.divinodrinks.com/728-large_default/gin-beefeater.jpg'
+WHERE id = 6;
+
 DELETE FROM Producto WHERE id = '1';
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Beefeeter","Alcohol ginebra","20","10");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Brugal","Alcohol ron","20","10");
-insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Red Label","Alcohol wishkyDD20""15")
+insert into producto(nombre,descripcion,puntosPorCompra,precioProducto) values ("Red Label","Alcohol wishkyDD20""15");
 ALTER TABLE producto ADD imagenUrl VARCHAR(255);
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Brugal","Alcohol RON","20","10","https://www.divinodrinks.com/834-large_default/ron-brugal-anejo.jpg");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Red Label","Alcohol WISHKY","25","10","https://sgfm.elcorteingles.es/SGFM/dctm/MEDIA03/202007/06/00118721000133____8__600x600.jpg");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Beefeeter","Alcohol GINEBRA","15","10","https://admin.bodeboca.com/sites/default/files/bot-beefeater-70-nuevaimagen.jpg");
 insert into producto(nombre,descripcion,puntosPorCompra,precioProducto,ImagenUrl) values ("Tequila","Alcohol CHUPITO","5","2","https://media.gettyimages.com/id/157337398/es/foto/primer-plano-de-la-toma-de-vidrio-y-limes.jpg?s=612x612&w=gi&k=20&c=ZEa3BcHuqL8Zh_y81WrgCnJr7T3GqRWhoXjjDZHTA6U=");
 
--- Crear la tabla Evento
-SELECT * FROM PRODUCTO;
+
 CREATE TABLE Evento (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100),
@@ -105,7 +108,8 @@ CREATE TABLE Evento (
   direccion VARCHAR(200),
   fecha DATE,
   puntosPorAsistir INT,
-  precioEvento DECIMAL(10, 2)
+  precioEvento DECIMAL(10, 2),
+  imagen VARCHAR(250)
 );
 ALTER TABLE Evento
 ADD imagen VARCHAR(255);
@@ -140,7 +144,7 @@ CREATE TABLE Discoteca (
   pais VARCHAR(100),
   telefono VARCHAR(20)
 );
-SELECT * FROM DISCOTECA;
+SELECT * FROM usuario;
 
 -- Crear la tabla Usuario
 CREATE TABLE Usuario (

@@ -23,8 +23,11 @@ public class UsuarioPuntos {
 		this.puntosTotales = puntosTotales;
 	}
 
-
-
+	public UsuarioPuntos(int puntosTotales) {
+		super();
+		this.puntosTotales= puntosTotales;
+	}
+	
 	public static List<UsuarioPuntos> obtenerPuntosTotales() {
 	    List<UsuarioPuntos> puntos = new ArrayList<>();
 	    try {

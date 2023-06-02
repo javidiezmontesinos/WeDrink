@@ -28,7 +28,26 @@ public class ClienteDiscoteca {
 
 
 	public int getPuntosAcumuladosDiscoteca() {
-		return puntosAcumuladosDiscoteca;
+	    int puntosAcumulados = 0;
+	    
+	    try (Connection connection = DAO.connect()) {
+	        String query = "SELECT puntosAcumuladosDiscoteca FROM ClienteDiscoteca " +
+	                       "INNER JOIN Usuario ON ClienteDiscoteca.id_cliente = Usuario.id " +
+	                       "INNER JOIN Discoteca ON ClienteDiscoteca.discoteca_id = Discoteca.id " +
+	                       "WHERE Usuario.correo = ? AND Discoteca.cif = ?";
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, usuarioCliente.getCorreo());
+	        statement.setString(2, discoteca.getCif());
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        if (resultSet.next()) {
+	            puntosAcumulados = resultSet.getInt("puntosAcumuladosDiscoteca");
+	        }
+	    } catch (SQLException | ConexionFallidaException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return puntosAcumulados;
 	}
 
 	public void setPuntosAcumuladosDiscoteca(int puntosAcumuladosDiscoteca) {
