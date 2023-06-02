@@ -1,6 +1,7 @@
 package clases;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -81,9 +82,8 @@ public class UsuarioPuntos {
 	}
 
 	public void setPuntosTotales(int puntosTotales) {
-		this.puntosTotales = puntosTotales;
+	    
 	}
-
 	@Override
 	public String toString() {
 		return "UsuarioPuntos [usuarioPnts=" + usuarioPnts + ", puntosTotales=" + puntosTotales + "]";
