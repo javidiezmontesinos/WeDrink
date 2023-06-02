@@ -34,7 +34,7 @@ public class Logro extends SuperClaseInfo {
 		List<Logro> logros = new ArrayList<>();
 
 		try {
-			// Utilizar DAO para obtener la conexión a la base de datos
+
 			Connection connection = DAO.connect();
 			Statement statement = connection.createStatement();
 
@@ -47,14 +47,11 @@ public class Logro extends SuperClaseInfo {
 				String descripcion = resultSet.getString("descripcion");
 				int puntosObtenidosLogros = resultSet.getInt("puntos");
 				boolean logroCompletado = resultSet.getBoolean("logrocompletado");
-				Logro logro = new Logro(nombre, imagenUrl, descripcion, puntosObtenidosLogros, logroCompletado); // Pasar
-																													// imagenUrl
-																													// al
-																													// constructor
+				Logro logro = new Logro(nombre, imagenUrl, descripcion, puntosObtenidosLogros, logroCompletado);
+
 				logros.add(logro);
 			}
 
-			// Cerrar la conexión a la base de datos
 			resultSet.close();
 			statement.close();
 			connection.close();
@@ -112,6 +109,18 @@ public class Logro extends SuperClaseInfo {
 
 	public void setLogroCompletado(boolean logroCompletado) {
 		this.logroCompletado = logroCompletado;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE logros SET logrocompletado = ? WHERE imagenlogro = ?");
+			statement.setBoolean(1, logroCompletado);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public int getId_logros() {
@@ -128,6 +137,18 @@ public class Logro extends SuperClaseInfo {
 
 	public void setImagenUrl(String imagenUrl) {
 		this.imagenUrl = imagenUrl;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE logros SET imagenlogro = ? WHERE imagenlogro = ?");
+			statement.setString(1, imagenUrl);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public int getPuntosObtenidosLogros() {
@@ -136,6 +157,18 @@ public class Logro extends SuperClaseInfo {
 
 	public void setPuntosObtenidosLogros(int puntosObtenidosLogros) {
 		this.puntosObtenidosLogros = puntosObtenidosLogros;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE logros SET puntos = ? WHERE imagenlogro = ?");
+			statement.setDouble(1, puntosObtenidosLogros);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override

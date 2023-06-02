@@ -53,7 +53,7 @@ CREATE TABLE Evento (
   imagen VARCHAR(255)
 );
 
-
+select * from evento;
 insert into evento (nombre,localidad,descripcion,direccion,fecha,puntosPorAsistir,precioEvento,imagen) values('San Juan festival', 'Malaga', 'Festival de musica urbana para la celebracion de San Juan', 'los santos 13', '2024-06-23', '100', '20.00', 'https://cope-cdnmed.agilecontent.com/resources/jpg/9/3/1655713026139.jpg');
 insert into evento (nombre,localidad,descripcion,direccion,fecha,puntosPorAsistir,precioEvento,imagen) values('Los Alamos beach festival', 'Malaga', 'festival musica en la playa de los alamos en malaga\n', 'los alamos 32', '2006-07-23', '100', '20.00', 'https://visitestepona.eu/wp-content/uploads/2019/12/CARTEL-FINAL-LOS-ALAMOS-2019_V04.png');
 insert into evento (nombre,localidad,descripcion,direccion,fecha,puntosPorAsistir,precioEvento,imagen) values('El Row', 'Malaga', 'Festival de musica tecno', 'acacias 3', '2005-06-23', '200', '40.00', 'https://allmusicspain.com/wp-content/uploads/2022/08/unnamed.jpg');
@@ -91,7 +91,6 @@ CREATE TABLE Premio (
 	idDiscoteca INT,
   FOREIGN KEY (idDiscoteca) REFERENCES Discoteca(id)
 );
-
 insert into premio(nombre,marca,descripcion,puntosNecesarios,Disponible,imagenUrl,idDiscoteca) values ("COPA VASO ANCHO","PRIMERAS MARCAS","COPA DE VASO ANCHO DE TU ALCOHOL FAVORITO","100","true","https://www.47cocktailbar.es/wp-content/uploads/2019/11/gin-tonic-hibiscus-new-400x509.jpg",null);
 insert into premio(nombre,marca,descripcion,puntosNecesarios,Disponible,imagenUrl,idDiscoteca) values ("2 COPAS VASO ANCHO","PRIMERAS MARCAS","2 COPAS DE VASO ANCHO DE TU ALCOHOL FAVORITO","200","true","https://s2.abcstatics.com/media/espana/2016/12/09/copas-discoteca-madrid-ktQ--620x349@abc.jpg","1");
 insert into premio(nombre,marca,descripcion,puntosNecesarios,Disponible,imagenUrl,idDiscoteca) values ("RESERVADO VIP 4 PERSONAS","VIP","RESERVADO VIP PARA 4 PERSONAS","5000","true","https://w7.pngwing.com/pngs/166/759/png-transparent-ticket-very-important-person-concert-music-festival-others.png","3");

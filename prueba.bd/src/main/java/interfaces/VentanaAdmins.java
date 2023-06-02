@@ -47,22 +47,21 @@ public class VentanaAdmins extends JPanel {
 
 		setLayout(new BorderLayout(0, 0));
 
-		// Panel principal
+		
 		JPanel panelPrincipal = new JPanel();
 		panelPrincipal.setLayout(new BorderLayout());
 
-		// Panel izquierdo
 		JPanel panelIzquierdo = new JPanel();
 		panelIzquierdo.setLayout(new BorderLayout());
 
-		// Label superior izquierdo
+	
 		JPanel panelSuperiorIzquierdo = new JPanel();
 		panelSuperiorIzquierdo.setLayout(new BorderLayout());
 		JLabel labelSuperiorIzquierdo = new JLabel("PROMOCIONES");
 		panelSuperiorIzquierdo.add(labelSuperiorIzquierdo, BorderLayout.NORTH);
 		panelIzquierdo.add(panelSuperiorIzquierdo, BorderLayout.NORTH);
 
-		// Botones superiores izquierdos
+	
 		JPanel panelBotonesSuperioresIzquierdos = new JPanel();
 		panelBotonesSuperioresIzquierdos.setLayout(new GridLayout(3, 1, 0, 10));
 
@@ -70,17 +69,17 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesSuperioresIzquierdos.add(boton1);
 		boton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
+				
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
-				// Crear los campos de texto para ingresar los datos del evento
+				
 				JTextField nombreField = new JTextField(20);
 				JTextField descripcionField = new JTextField(20);
 				JTextField puntosField = new JTextField(20);
 				JTextField precioField = new JTextField(20);
 				JTextField imagenUrlField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+				
 				panel.add(new JLabel("Nombre:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("Descripción:"));
@@ -92,19 +91,19 @@ public class VentanaAdmins extends JPanel {
 				panel.add(new JLabel("URL de la Imagen:"));
 				panel.add(imagenUrlField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
+				
 				int result = JOptionPane.showConfirmDialog(null, panel, "Agregar promocion",
 						JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
 					try {
-						// Obtener los valores ingresados por el usuario
+						
 						String nombre = nombreField.getText();
 						String descripcion = descripcionField.getText();
 						int puntosPorAsistir = Integer.parseInt(puntosField.getText());
 						double precioEvento = Double.parseDouble(precioField.getText());
 						String imagenUrl = imagenUrlField.getText();
 
-						// Registrar el evento (aquí debes implementar tu propia lógica)
+						
 						Producto.registrarProducto(nombre, descripcion, puntosPorAsistir, precioEvento, imagenUrl);
 
 						JOptionPane.showMessageDialog(null, "Promocion registrado correctamente", "Éxito",
@@ -113,7 +112,7 @@ public class VentanaAdmins extends JPanel {
 						JOptionPane.showMessageDialog(null, "Error al convertir los valores numericos", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-					// Aquí puedes manejar las excepciones que puedas tener al registrar el evento
+					
 					catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -130,29 +129,28 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesSuperioresIzquierdos.add(boton3);
 		boton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
-				// Crear los campos de texto para ingresar los datos del producto a eliminar
+				
 				JTextField nombreField = new JTextField(20);
 				JTextField imagenUrlField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+		
 				panel.add(new JLabel("Nombre de la promocion:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("URL de la Imagen:"));
 				panel.add(imagenUrlField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
+				
 				int result = JOptionPane.showConfirmDialog(null, panel, "Eliminar Promocion",
 						JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
-					// Obtener los valores ingresados por el usuario
+					
 					String nombre = nombreField.getText();
 					String imagenUrl = imagenUrlField.getText();
 
 					try {
-						// Llamar al método para eliminar el producto
+						
 						Producto.borrarProducto(nombre, imagenUrl);
 						JOptionPane.showMessageDialog(null, "Promocion eliminada exitosamente", "Éxito",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -167,13 +165,13 @@ public class VentanaAdmins extends JPanel {
 
 		panelIzquierdo.add(panelBotonesSuperioresIzquierdos, BorderLayout.CENTER);
 
-		// Label inferior izquierdo
+
 		JPanel panelInferiorIzquierdo = new JPanel();
 		panelInferiorIzquierdo.setLayout(new BorderLayout());
 		JLabel labelInferiorIzquierdo = new JLabel("PREMIOS");
 		panelInferiorIzquierdo.add(labelInferiorIzquierdo, BorderLayout.NORTH);
 
-		// Botones inferiores izquierdos
+		
 		JPanel panelBotonesInferioresIzquierdos = new JPanel();
 		panelBotonesInferioresIzquierdos.setLayout(new GridLayout(3, 1, 0, 10));
 
@@ -181,7 +179,7 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesInferioresIzquierdos.add(boton4);
 		boton4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
+				
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
 				JTextField nombreField = new JTextField(20);
@@ -192,7 +190,7 @@ public class VentanaAdmins extends JPanel {
 				JTextField imagenUrlField = new JTextField(20);
 				JTextField premioDiscotecaField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+				
 				panel.add(new JLabel("Nombre:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("Marca:"));
@@ -208,12 +206,12 @@ public class VentanaAdmins extends JPanel {
 				panel.add(new JLabel("ID de la discoteca:"));
 				panel.add(premioDiscotecaField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
+			
 				int result = JOptionPane.showConfirmDialog(null, panel, "Agregar Premios",
 						JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
 					try {
-						// Obtener los valores ingresados por el usuario
+						
 						String nombre = nombreField.getText();
 						String marca = nombreField.getText();
 						String descripcion = descripcionField.getText();
@@ -222,7 +220,7 @@ public class VentanaAdmins extends JPanel {
 						String imagenUrl = imagenUrlField.getText();
 						int idDiscoteca = Integer.parseInt(premioDiscotecaField.getText());
 
-						// Registrar el evento (aquí debes implementar tu propia lógica)
+					
 						Premio.registrarPremio(nombre, marca, descripcion, puntosNecesarios, disponibilidad, imagenUrl,
 								idDiscoteca);
 
@@ -232,7 +230,7 @@ public class VentanaAdmins extends JPanel {
 						JOptionPane.showMessageDialog(null, "Error al convertir los valores numericos", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-					// Aquí puedes manejar las excepciones que puedas tener al registrar el evento
+				
 					catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -250,29 +248,29 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesInferioresIzquierdos.add(boton6);
 		boton6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
+				
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
-				// Crear los campos de texto para ingresar los datos del producto a eliminar
+				
 				JTextField nombreField = new JTextField(20);
 				JTextField imagenUrlField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+			
 				panel.add(new JLabel("Nombre del Premio:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("URL de la Imagen:"));
 				panel.add(imagenUrlField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
+	
 				int result = JOptionPane.showConfirmDialog(null, panel, "Eliminar Premio",
 						JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
-					// Obtener los valores ingresados por el usuario
+				
 					String nombre = nombreField.getText();
 					String imagenUrl = imagenUrlField.getText();
 
 					try {
-						// Llamar al método para eliminar el producto
+					
 						Premio.borrarPremio(nombre, imagenUrl);
 						JOptionPane.showMessageDialog(null, "Premio eliminado exitosamente", "Éxito",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -290,7 +288,7 @@ public class VentanaAdmins extends JPanel {
 
 		panelPrincipal.add(panelIzquierdo, BorderLayout.WEST);
 
-		// Panel central con scroll
+	
 		JPanel panelCentral = new JPanel();
 		panelCentral.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane();
@@ -298,18 +296,17 @@ public class VentanaAdmins extends JPanel {
 
 		panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 
-		// Panel derecho
 		JPanel panelDerecho = new JPanel();
 		panelDerecho.setLayout(new BorderLayout());
 
-		// Label superior derecho
+	
 		JPanel panelSuperiorDerecho = new JPanel();
 		panelSuperiorDerecho.setLayout(new BorderLayout());
 		JLabel labelSuperiorDerecho = new JLabel("EVENTOS");
 		panelSuperiorDerecho.add(labelSuperiorDerecho, BorderLayout.NORTH);
 		panelDerecho.add(panelSuperiorDerecho, BorderLayout.NORTH);
 
-		// Botones superiores derechos
+	
 		JPanel panelBotonesSuperioresDerechos = new JPanel();
 		panelBotonesSuperioresDerechos.setLayout(new GridLayout(3, 1, 0, 10));
 
@@ -317,10 +314,9 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesSuperioresDerechos.add(boton7);
 		boton7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
+				
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
-				// Crear los campos de texto para ingresar los datos del evento
 				JTextField nombreField = new JTextField(20);
 				JTextField descripcionField = new JTextField(20);
 				JTextField localidadField = new JTextField(20);
@@ -330,7 +326,7 @@ public class VentanaAdmins extends JPanel {
 				JTextField precioField = new JTextField(20);
 				JTextField imagenUrlField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+				
 				panel.add(new JLabel("Nombre:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("Descripción:"));
@@ -348,11 +344,11 @@ public class VentanaAdmins extends JPanel {
 				panel.add(new JLabel("URL de la Imagen:"));
 				panel.add(imagenUrlField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
+				
 				int result = JOptionPane.showConfirmDialog(null, panel, "Agregar Evento", JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
 					try {
-						// Obtener los valores ingresados por el usuario
+						
 						String nombre = nombreField.getText();
 						String descripcion = descripcionField.getText();
 						String localidad = localidadField.getText();
@@ -362,11 +358,11 @@ public class VentanaAdmins extends JPanel {
 						double precioEvento = Double.parseDouble(precioField.getText());
 						String imagenUrl = imagenUrlField.getText();
 
-						// Convertir la fecha ingresada en un objeto Date
+						
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 						Date fecha = dateFormat.parse(fechaString);
 
-						// Registrar el evento (aquí debes implementar tu propia lógica)
+					
 						Evento.registrarEvento(nombre, descripcion, localidad, direccion, fecha, puntosPorAsistir,
 								precioEvento, imagenUrl);
 
@@ -379,7 +375,7 @@ public class VentanaAdmins extends JPanel {
 						JOptionPane.showMessageDialog(null, "Error al convertir los valores numericos", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-					// Aquí puedes manejar las excepciones que puedas tener al registrar el evento
+				
 					catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -396,29 +392,26 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesSuperioresDerechos.add(boton9);
 		boton9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
+			
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
-				// Crear los campos de texto para ingresar los datos del producto a eliminar
+				
 				JTextField nombreField = new JTextField(20);
 				JTextField imagenUrlField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+		
 				panel.add(new JLabel("Nombre del Evento:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("URL de la Imagen:"));
 				panel.add(imagenUrlField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
 				int result = JOptionPane.showConfirmDialog(null, panel, "Eliminar Evento",
 						JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
-					// Obtener los valores ingresados por el usuario
 					String nombre = nombreField.getText();
 					String imagenUrl = imagenUrlField.getText();
 
 					try {
-						// Llamar al método para eliminar el producto
 						Evento.borrarEvento(nombre, imagenUrl);
 						JOptionPane.showMessageDialog(null, "Evento eliminado exitosamente", "Éxito",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -433,13 +426,13 @@ public class VentanaAdmins extends JPanel {
 
 		panelDerecho.add(panelBotonesSuperioresDerechos, BorderLayout.CENTER);
 
-		// Label inferior derecho
+	
 		JPanel panelInferiorDerecho = new JPanel();
 		panelInferiorDerecho.setLayout(new BorderLayout());
 		JLabel labelInferiorDerecho = new JLabel("LOGROS");
 		panelInferiorDerecho.add(labelInferiorDerecho, BorderLayout.NORTH);
 
-		// Botones inferiores derechos
+	
 		JPanel panelBotonesInferioresDerechos = new JPanel();
 		panelBotonesInferioresDerechos.setLayout(new GridLayout(3, 1, 0, 10));
 
@@ -447,7 +440,7 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesInferioresDerechos.add(boton10);
 		boton10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
+				
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
 				JTextField nombreField = new JTextField(20);
@@ -456,7 +449,7 @@ public class VentanaAdmins extends JPanel {
 				JTextField puntosField = new JTextField(20);
 				JTextField completadoField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
+				
 				panel.add(new JLabel("Nombre:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("Imagen:"));
@@ -468,18 +461,17 @@ public class VentanaAdmins extends JPanel {
 				panel.add(new JLabel("logro completado:"));
 				panel.add(completadoField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
+				
 				int result = JOptionPane.showConfirmDialog(null, panel, "Agregar Logros", JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
 					try {
-						// Obtener los valores ingresados por el usuario
+					
 						String nombre = nombreField.getText();
 						String imagenlogro = nombreField.getText();
 						String descripcion = descripcionField.getText();
 						int puntos = Integer.parseInt(puntosField.getText());
 						Boolean logrocompletado = Boolean.parseBoolean(completadoField.getText());
 
-						// Registrar el evento (aquí debes implementar tu propia lógica)
 						Logro.registrarLogro(nombre, imagenlogro, descripcion, puntos, logrocompletado);
 
 						JOptionPane.showMessageDialog(null, "Logro registrado correctamente", "Éxito",
@@ -488,7 +480,7 @@ public class VentanaAdmins extends JPanel {
 						JOptionPane.showMessageDialog(null, "Error al convertir los valores numericos", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-					// Aquí puedes manejar las excepciones que puedas tener al registrar el evento
+					
 					catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -504,28 +496,22 @@ public class VentanaAdmins extends JPanel {
 		panelBotonesInferioresDerechos.add(boton12);
 		boton12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Crear un panel para la ventana emergente
 				JPanel panel = new JPanel(new GridLayout(0, 2));
 
-				// Crear los campos de texto para ingresar los datos del producto a eliminar
 				JTextField nombreField = new JTextField(20);
 				JTextField imagenUrlField = new JTextField(20);
 
-				// Agregar las etiquetas y los campos de texto al panel
 				panel.add(new JLabel("Nombre del Logro:"));
 				panel.add(nombreField);
 				panel.add(new JLabel("URL de la Imagen:"));
 				panel.add(imagenUrlField);
 
-				// Mostrar la ventana emergente y esperar la respuesta del usuario
 				int result = JOptionPane.showConfirmDialog(null, panel, "Eliminar Logro", JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
-					// Obtener los valores ingresados por el usuario
 					String nombre = nombreField.getText();
 					String imagenUrl = imagenUrlField.getText();
 
 					try {
-						// Llamar al método para eliminar el producto
 						Logro.borrarLogro(nombre, imagenUrl);
 						JOptionPane.showMessageDialog(null, "Logro eliminado exitosamente", "Éxito",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -543,7 +529,6 @@ public class VentanaAdmins extends JPanel {
 
 		panelPrincipal.add(panelDerecho, BorderLayout.EAST);
 
-		// Agregar panel principal a la ventana
 		add(panelPrincipal, BorderLayout.NORTH);
 
 	}

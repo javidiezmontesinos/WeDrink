@@ -78,15 +78,34 @@ public class UsuarioPuntos {
 
 	public void setUsuarioPnts(Usuario usuarioPnts) {
 		this.usuarioPnts = usuarioPnts;
+		
 	}
 
 	public int getPuntosTotales() {
 		return puntosTotales;
 	}
 
-	public void setPuntosTotales(int puntosTotales) {
-	    
-	}
+	  public void setPuntosTotales(int puntosTotales) {
+	        this.puntosTotales = puntosTotales;
+	        try {
+	            Connection connection = DAO.connect();
+	            String sql = "UPDATE usuariopuntos SET puntos = ? WHERE usuario_id = ?";
+
+	            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+	            preparedStatement.setInt(1, this.puntosTotales);
+	            preparedStatement.setString(2, this.usuarioPnts.getNick());  // Asumiendo que Usuario tiene un método getId()
+
+	            int rowsAffected = preparedStatement.executeUpdate();
+	            if (rowsAffected == 0) {
+	                throw new SQLException("Actualización de puntos fallida. Ninguna fila fue afectada.");
+	            }
+
+	            preparedStatement.close();
+	            connection.close();
+	        } catch (SQLException | ConexionFallidaException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	@Override
 	public String toString() {
 		return "UsuarioPuntos [usuarioPnts=" + usuarioPnts + ", puntosTotales=" + puntosTotales + "]";

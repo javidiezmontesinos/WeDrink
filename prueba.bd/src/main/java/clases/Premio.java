@@ -18,9 +18,7 @@ public class Premio extends SuperClaseInfo {
 	private boolean disponibilidad;
 	private String imagenUrl;
 	private int premioDiscoteca;
-	
 
-	
 	public Premio(String nombre, String descripcion, String marca, double puntosNecesarios, boolean disponibilidad,
 			String imagenUrl, int premioDiscoteca) {
 		super(nombre, descripcion);
@@ -30,17 +28,15 @@ public class Premio extends SuperClaseInfo {
 		this.imagenUrl = imagenUrl;
 		this.premioDiscoteca = premioDiscoteca;
 	}
-	
 
 	public int getPremioDiscoteca() {
 		return premioDiscoteca;
 	}
 
-
 	public void setPremioDiscoteca(int premioDiscoteca) {
 		this.premioDiscoteca = premioDiscoteca;
-	}
 
+	}
 
 	public boolean isDisponibilidad() {
 		return disponibilidad;
@@ -48,12 +44,26 @@ public class Premio extends SuperClaseInfo {
 
 	public void setDisponibilidad(boolean disponibilidad) {
 		this.disponibilidad = disponibilidad;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE premio SET Disponible = ? WHERE imagenUrl = ?");
+			statement.setBoolean(1, disponibilidad);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public String getImagenUrl() {
 		return imagenUrl;
 	}
-	public static void registrarPremio(String nombre, String descripcion, String marca, double puntosNecesarios, boolean disponibilidad,String imagenUrl,int premioDiscoteca)
+
+	public static void registrarPremio(String nombre, String descripcion, String marca, double puntosNecesarios,
+			boolean disponibilidad, String imagenUrl, int premioDiscoteca)
 			throws SQLException, ConexionFallidaException {
 		try (Connection connection = DAO.connect()) {
 
@@ -82,57 +92,84 @@ public class Premio extends SuperClaseInfo {
 			}
 		}
 	}
+
 	public void setImagenUrl(String imagenUrl) {
 		this.imagenUrl = imagenUrl;
-	}
-	public static void borrarPremio(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
-	    try (Connection connection = DAO.connect()) {
-	        String query = "DELETE FROM Premio WHERE nombre = ? AND imagenUrl = ?";
-	        PreparedStatement statement = connection.prepareStatement(query);
-	        statement.setString(1, nombre);
-	        statement.setString(2, imagenUrl);
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE premio SET imagenUrl = ? WHERE imagenUrl = ?");
+			statement.setString(1, imagenUrl);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
 
-	        int rowsDeleted = statement.executeUpdate();
-	        if (rowsDeleted > 0) {
-	            System.out.println("Premio eliminado exitosamente!");
-	        } else {
-	            throw new SQLException("El Premio no existe");
-	        }
-	    }
+	}
+
+	public static void borrarPremio(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
+		try (Connection connection = DAO.connect()) {
+			String query = "DELETE FROM Premio WHERE nombre = ? AND imagenUrl = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, nombre);
+			statement.setString(2, imagenUrl);
+
+			int rowsDeleted = statement.executeUpdate();
+			if (rowsDeleted > 0) {
+				System.out.println("Premio eliminado exitosamente!");
+			} else {
+				throw new SQLException("El Premio no existe");
+			}
+		}
 	}
 
 	public String getMarca() {
 		return marca;
 	}
+
 	public void setMarca(String marca) {
 		this.marca = marca;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE premio SET marca = ? WHERE imagenUrl = ?");
+			statement.setString(1, marca);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+
 	}
+
 	public static List<Premio> obtenerPremios() {
 		List<Premio> premios = new ArrayList<>();
 
 		try {
-			// Utilizar DAO para obtener la conexión a la base de datos
+
 			Connection connection = DAO.connect();
 			Statement statement = connection.createStatement();
 
-			
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM premio");
 
 			while (resultSet.next()) {
 				int id = resultSet.getInt("id");
 				String nombre = resultSet.getString("nombre");
 				String marca = resultSet.getString("marca");
-				String descripcion= resultSet.getString("descripcion");
+				String descripcion = resultSet.getString("descripcion");
 				int puntosNecesarios = resultSet.getInt("puntosNecesarios");
 				boolean disponibilidad = resultSet.getBoolean("disponible");
 				String imagenUrl = resultSet.getString("imagenUrl");
 				int premioDiscoteca = resultSet.getInt("idDiscoteca");
-	
-				Premio premio = new Premio(nombre,marca,descripcion,puntosNecesarios, disponibilidad, imagenUrl,premioDiscoteca); // Pasar imagenUrl al constructor
+
+				Premio premio = new Premio(nombre, marca, descripcion, puntosNecesarios, disponibilidad, imagenUrl,
+						premioDiscoteca); // Pasar imagenUrl al constructor
 				premios.add(premio);
 			}
 
-			// Cerrar la conexión a la base de datos
 			resultSet.close();
 			statement.close();
 			connection.close();
@@ -142,22 +179,31 @@ public class Premio extends SuperClaseInfo {
 
 		return premios;
 	}
-	
+
 	public double getPuntosNecesarios() {
 		return puntosNecesarios;
 	}
+
 	public void setPuntosNecesarios(double puntosNecesarios) {
 		this.puntosNecesarios = puntosNecesarios;
-	}
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection
+					.prepareStatement("UPDATE premio SET puntosNecesarios = ? WHERE imagenUrl = ?");
+			statement.setDouble(1, puntosNecesarios);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
 
+	}
 
 	@Override
 	public String toString() {
 		return "Premio [marca=" + marca + ", puntosNecesarios=" + puntosNecesarios + ", disponibilidad="
 				+ disponibilidad + ", imagenUrl=" + imagenUrl + ", premioDiscoteca=" + premioDiscoteca + "]";
 	}
-	
-
-	
 
 }

@@ -22,7 +22,7 @@ public class Producto extends SuperClaseInfo {
 		super(nombre, descripcion);
 		this.puntosPorCompra = puntosPorCompra;
 		this.precioProducto = precioProducto;
-		this.imagenUrl = imagenUrl; // Inicializar el nuevo atributo
+		this.imagenUrl = imagenUrl;
 	}
 	public static void registrarProducto(String nombre, String descripcion, int puntosPorCompra, double precioProducto, String imagenUrl)
 			throws SQLException, ConexionFallidaException {
@@ -72,7 +72,19 @@ public class Producto extends SuperClaseInfo {
 
 	public void setPuntosPorCompra(int puntosPorCompra) {
 		this.puntosPorCompra = puntosPorCompra;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection.prepareStatement("UPDATE producto SET puntosPorCompra = ? WHERE imagenUrl = ?");
+			statement.setInt(1, puntosPorCompra);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+	
 	}
+	
 
 	public double getPrecioProducto() {
 		return precioProducto;
@@ -80,6 +92,18 @@ public class Producto extends SuperClaseInfo {
 
 	public void setPrecioProducto(double precioProducto) {
 		this.precioProducto = precioProducto;
+		try {
+			Connection connection = DAO.connect();
+			PreparedStatement statement = connection.prepareStatement("UPDATE producto SET precioProducto = ? WHERE imagenUrl = ?");
+			statement.setDouble(1, precioProducto);
+			statement.setString(2, this.imagenUrl);
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException | ConexionFallidaException e) {
+			e.printStackTrace();
+		}
+	
+	
 	}
 
 	public String getImagenUrl() { // Nuevo getter
@@ -90,11 +114,11 @@ public class Producto extends SuperClaseInfo {
 		List<Producto> productos = new ArrayList<>();
 
 		try {
-			// Utilizar DAO para obtener la conexión a la base de datos
+			
 			Connection connection = DAO.connect();
 			Statement statement = connection.createStatement();
 
-			// Obtener los productos de la tabla "Productos"
+			
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Producto");
 
 			while (resultSet.next()) {
@@ -103,13 +127,13 @@ public class Producto extends SuperClaseInfo {
 				String descripcion = resultSet.getString("descripcion");
 				int puntosPorCompra = resultSet.getInt("puntosPorCompra");
 				double precioProducto = resultSet.getDouble("precioProducto");
-				String imagenUrl = resultSet.getString("imagenUrl"); // Obtener la imagenUrl del producto
+				String imagenUrl = resultSet.getString("imagenUrl");
 
-				Producto producto = new Producto(nombre, descripcion, puntosPorCompra, precioProducto, imagenUrl); // Pasar imagenUrl al constructor
+				Producto producto = new Producto(nombre, descripcion, puntosPorCompra, precioProducto, imagenUrl); 
 				productos.add(producto);
 			}
 
-			// Cerrar la conexión a la base de datos
+			
 			resultSet.close();
 			statement.close();
 			connection.close();
@@ -122,9 +146,8 @@ public class Producto extends SuperClaseInfo {
 
 	@Override
 	public String toString() {
-		return "Producto [puntosPorCompra=" + puntosPorCompra + ", precioProducto=" + precioProducto + ", imagenUrl=" + imagenUrl + "]"; // Imprimir también imagenUrl
+		return "Producto [puntosPorCompra=" + puntosPorCompra + ", precioProducto=" + precioProducto + ", imagenUrl=" + imagenUrl + "]"; 
 	}
 
-	//metodos
 	
 }

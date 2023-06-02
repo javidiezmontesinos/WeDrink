@@ -44,7 +44,7 @@ public class Evento extends SuperClaseLugar {
 		List<Evento> eventos = new ArrayList<>();
 
 		try {
-			// Utilizar DAO para obtener la conexión a la base de datos
+
 			Connection connection = DAO.connect();
 			Statement statement = connection.createStatement();
 
@@ -62,11 +62,10 @@ public class Evento extends SuperClaseLugar {
 				String imagenUrl = resultSet.getString("imagen");
 
 				Evento evento = new Evento(nombre, localidad, descripcion, direccion, imagenUrl, fecha,
-						puntosPorAsistir, precioEvento); // Pasar imagenUrl al constructor
+						puntosPorAsistir, precioEvento);
 				eventos.add(evento);
 			}
 
-			// Cerrar la conexión a la base de datos
 			resultSet.close();
 			statement.close();
 			connection.close();
@@ -85,7 +84,7 @@ public class Evento extends SuperClaseLugar {
 			String checkQuery = "SELECT * FROM Evento WHERE nombre = ? AND imagen = ?";
 			PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
 			checkStatement.setString(1, nombre);
-			checkStatement.setString(2,imagenUrl);
+			checkStatement.setString(2, imagenUrl);
 			ResultSet resultSet = checkStatement.executeQuery();
 			if (resultSet.next()) {
 				throw new SQLException("El evento ya existe");
@@ -134,21 +133,20 @@ public class Evento extends SuperClaseLugar {
 	}
 
 	public static void borrarEvento(String nombre, String imagenUrl) throws SQLException, ConexionFallidaException {
-	    try (Connection connection = DAO.connect()) {
-	        String query = "DELETE FROM Evento WHERE nombre = ? AND imagen = ?";
-	        PreparedStatement statement = connection.prepareStatement(query);
-	        statement.setString(1, nombre);
-	        statement.setString(2, imagenUrl);
+		try (Connection connection = DAO.connect()) {
+			String query = "DELETE FROM Evento WHERE nombre = ? AND imagen = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, nombre);
+			statement.setString(2, imagenUrl);
 
-	        int rowsDeleted = statement.executeUpdate();
-	        if (rowsDeleted > 0) {
-	            System.out.println("Evento eliminado exitosamente!");
-	        } else {
-	            throw new SQLException("El evento no existe");
-	        }
-	    }
+			int rowsDeleted = statement.executeUpdate();
+			if (rowsDeleted > 0) {
+				System.out.println("Evento eliminado exitosamente!");
+			} else {
+				throw new SQLException("El evento no existe");
+			}
+		}
 	}
-	
 
 	public Date getFecha() {
 		return fecha;

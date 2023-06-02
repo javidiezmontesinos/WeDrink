@@ -278,25 +278,22 @@ public class Usuario extends SuperClaseLugar {
 	public String getCorreo() {
 		return correo;
 	}
+
 	public HashMap<String, Integer> getPuntosTotales() {
-	    HashMap<String, Integer> puntosTotalesUsuario = new HashMap<>();
+		HashMap<String, Integer> puntosTotalesUsuario = new HashMap<>();
 
-	    List<UsuarioPuntos> puntos = UsuarioPuntos.obtenerPuntosTotales();
+		List<UsuarioPuntos> puntos = UsuarioPuntos.obtenerPuntosTotales();
 
-	    for (UsuarioPuntos usuarioPuntos : puntos) {
-	        Usuario usuario = usuarioPuntos.getUsuarioPnts();
-	        if (usuario.getCorreo().equals(correo)) {
-	            int puntosTotales = usuarioPuntos.getPuntosTotales();
-	            puntosTotalesUsuario.put(usuario.getNick(), puntosTotales);
-	        }
-	    }
+		for (UsuarioPuntos usuarioPuntos : puntos) {
+			Usuario usuario = usuarioPuntos.getUsuarioPnts();
+			if (usuario.getCorreo().equals(correo)) {
+				int puntosTotales = usuarioPuntos.getPuntosTotales();
+				puntosTotalesUsuario.put(usuario.getNick(), puntosTotales);
+			}
+		}
 
-	    return puntosTotalesUsuario;
+		return puntosTotalesUsuario;
 	}
-
-
-	
-
 
 	public void setPuntosEnDiscoteca(HashMap<String, ClienteDiscoteca> puntosEnDiscoteca) {
 		this.puntosEnDiscoteca = puntosEnDiscoteca;
@@ -326,9 +323,7 @@ public class Usuario extends SuperClaseLugar {
 				for (Entry<String, ClienteDiscoteca> entry : puntosEnDiscoteca.entrySet()) {
 					String discotecaId = entry.getKey();
 					ClienteDiscoteca clienteDiscoteca = entry.getValue();
-					int puntos = clienteDiscoteca.getPuntosAcumuladosDiscoteca(); // Asegúrate de obtener los puntos
-																					// correctamente desde el objeto
-																					// ClienteDiscoteca
+					int puntos = clienteDiscoteca.getPuntosAcumuladosDiscoteca();
 
 					insertStatement.setInt(1, usuarioId);
 					insertStatement.setString(2, discotecaId);
@@ -349,31 +344,26 @@ public class Usuario extends SuperClaseLugar {
 		this.puntosTotales = puntosTotales;
 
 		try (Connection connection = DAO.connect()) {
-			// Primero, obtener el ID del usuario basado en el correo
+
 			String selectQuery = "SELECT id FROM Usuario WHERE correo = ?";
 			PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
-			selectStatement.setString(1, correo); // Suponiendo que tienes una variable de instancia "correo" para
-													// identificar al usuario
+			selectStatement.setString(1, correo);
 			ResultSet resultSet = selectStatement.executeQuery();
 
 			if (resultSet.next()) {
 				int usuarioId = resultSet.getInt("id");
 
-				// Luego, eliminar los puntos totales existentes del usuario en la base de datos
 				String deleteQuery = "DELETE FROM usuariopuntos WHERE usuario_id = ?";
 				PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
 				deleteStatement.setInt(1, usuarioId);
 				deleteStatement.executeUpdate();
 
-				// Por último, insertar los nuevos puntos totales del usuario en la base de
-				// datos
 				String insertQuery = "INSERT INTO usuariopuntos (usuario_id, puntos) VALUES (?, ?)";
 				PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
 				for (Entry<String, UsuarioPuntos> entry : puntosTotales.entrySet()) {
 					String nombreDiscoteca = entry.getKey();
 					UsuarioPuntos usuarioPuntos = entry.getValue();
-					int puntos = usuarioPuntos.getPuntosTotales(); // Asegúrate de obtener los puntos correctamente
-																	// desde el objeto UsuarioPuntos
+					int puntos = usuarioPuntos.getPuntosTotales();
 
 					insertStatement.setInt(1, usuarioId);
 					insertStatement.setInt(2, puntos);
