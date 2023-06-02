@@ -1,6 +1,7 @@
 package clases;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,7 +53,35 @@ public class Premio extends SuperClaseInfo {
 	public String getImagenUrl() {
 		return imagenUrl;
 	}
+	public static void registrarPremio(String nombre, String descripcion, String marca, double puntosNecesarios, boolean disponibilidad,String imagenUrl,int premioDiscoteca)
+			throws SQLException, ConexionFallidaException {
+		try (Connection connection = DAO.connect()) {
 
+			String checkQuery = "SELECT * FROM Premio WHERE nombre = ? AND imagenUrl = ?";
+			PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
+			checkStatement.setString(1, nombre);
+			checkStatement.setString(2, imagenUrl);
+			ResultSet resultSet = checkStatement.executeQuery();
+			if (resultSet.next()) {
+				throw new SQLException("El Premio ya existe");
+			}
+
+			String query = "INSERT INTO Premio (nombre, marca, descripcion, puntosNecesarios, disponible, imagenUrl, idDiscoteca) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, nombre);
+			statement.setString(2, marca);
+			statement.setString(3, descripcion);
+			statement.setDouble(4, puntosNecesarios);
+			statement.setBoolean(5, disponibilidad);
+			statement.setString(6, imagenUrl);
+			statement.setInt(7, premioDiscoteca);
+
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("Premio registrado exitosamente!");
+			}
+		}
+	}
 	public void setImagenUrl(String imagenUrl) {
 		this.imagenUrl = imagenUrl;
 	}

@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import clases.Evento;
+import clases.Premio;
 import clases.Producto;
 import clases.Usuario;
 import exceptions.ConexionFallidaException;
@@ -140,6 +141,68 @@ public class VentanaAdmins extends JPanel {
 
 		JButton boton4 = new JButton("AÑADIR PREMIOS");
 		panelBotonesInferioresIzquierdos.add(boton4);
+		boton4.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        // Crear un panel para la ventana emergente
+		        JPanel panel = new JPanel(new GridLayout(0, 2));
+
+		        
+		        JTextField nombreField = new JTextField(20);
+		        JTextField marcaField = new JTextField(20);
+		        JTextField descripcionField = new JTextField(20);
+		        JTextField puntosNecesariosField = new JTextField(20);
+		        JTextField disponibilidadField = new JTextField(20);
+		        JTextField imagenUrlField = new JTextField(20);
+		        JTextField premioDiscotecaField= new JTextField(20);
+
+		        // Agregar las etiquetas y los campos de texto al panel
+		        panel.add(new JLabel("Nombre:"));
+		        panel.add(nombreField);
+		        panel.add(new JLabel("Marca:"));
+		        panel.add(marcaField);
+		        panel.add(new JLabel("Descripción:"));
+		        panel.add(descripcionField);
+		        panel.add(new JLabel("Puntos necesarios:"));
+		        panel.add(puntosNecesariosField);
+		        panel.add(new JLabel("disponibilidad:"));
+		        panel.add(disponibilidadField);
+		        panel.add(new JLabel("URL de la Imagen:"));
+		        panel.add(imagenUrlField);
+		        panel.add(new JLabel("ID de la discoteca:"));
+		        panel.add(premioDiscotecaField);
+
+		        // Mostrar la ventana emergente y esperar la respuesta del usuario
+		        int result = JOptionPane.showConfirmDialog(null, panel, "Agregar Premios", JOptionPane.OK_CANCEL_OPTION);
+		        if (result == JOptionPane.OK_OPTION) {
+		            try {
+		                // Obtener los valores ingresados por el usuario
+		                String nombre = nombreField.getText();
+		                String marca = nombreField.getText();
+		                String descripcion = descripcionField.getText();
+		                double puntosNecesarios = Double.parseDouble(puntosNecesariosField.getText());
+		                Boolean disponibilidad = Boolean.parseBoolean(disponibilidadField.getText());
+		                String imagenUrl = imagenUrlField.getText();
+		                int idDiscoteca= Integer.parseInt(premioDiscotecaField.getText());
+
+		                // Registrar el evento (aquí debes implementar tu propia lógica)
+		                Premio.registrarPremio(nombre, marca, descripcion, puntosNecesarios, disponibilidad,imagenUrl,idDiscoteca);
+
+		                JOptionPane.showMessageDialog(null, "Premio registrado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+		            } catch (NumberFormatException e2) {
+		                JOptionPane.showMessageDialog(null, "Error al convertir los valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+		            } 
+		            // Aquí puedes manejar las excepciones que puedas tener al registrar el evento
+					catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ConexionFallidaException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		        }
+		    }
+		});
+
 
 		JButton boton5 = new JButton("EDITAR PREMIOS");
 		panelBotonesInferioresIzquierdos.add(boton5);
